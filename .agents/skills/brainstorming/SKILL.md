@@ -36,6 +36,7 @@ You MUST create a task for each of these items and complete them in order:
 digraph brainstorming {
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
+    "Clarify Requirements" [shape=box];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
@@ -43,7 +44,8 @@ digraph brainstorming {
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Ask clarifying questions" -> "Clarify Requirements";
+    "Clarify Requirements" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -65,7 +67,9 @@ digraph brainstorming {
   - `feature`: request adds a new capability or modifies behavior
   - `general`: unclassified requests
 - If classification is ambiguous, ask one question (`feature` vs `general`); if unresolved, assume `general` and state the assumption.
-- Focus on understanding by workflow type:
+
+**Clarify Requirements:**
+- Before proposing approaches, explicitly confirm the following based on workflow type:
   - `feature`:
     - critical user journey
     - user story

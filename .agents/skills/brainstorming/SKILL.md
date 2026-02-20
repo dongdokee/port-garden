@@ -25,10 +25,11 @@ You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
 2. **Ask clarifying questions** — one at a time, classify workflow type, then gather required understanding inputs
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
-6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+3. **Confirm Requirements (Gate)** — explicitly confirm requirements (e.g., User Stories/ACs or Goals/Constraints) based on workflow type and get approval BEFORE proposing solutions
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
 
@@ -36,7 +37,8 @@ You MUST create a task for each of these items and complete them in order:
 digraph brainstorming {
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
-    "Clarify Requirements" [shape=box];
+    "Confirm Requirements (Gate)" [shape=box];
+    "User confirms requirements?" [shape=diamond];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
@@ -44,8 +46,10 @@ digraph brainstorming {
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Clarify Requirements";
-    "Clarify Requirements" -> "Propose 2-3 approaches";
+    "Ask clarifying questions" -> "Confirm Requirements (Gate)";
+    "Confirm Requirements (Gate)" -> "User confirms requirements?";
+    "User confirms requirements?" -> "Propose 2-3 approaches" [label="yes"];
+    "User confirms requirements?" -> "Ask clarifying questions" [label="no, revise"];
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -68,18 +72,21 @@ digraph brainstorming {
   - `general`: unclassified requests
 - If classification is ambiguous, ask one question (`feature` vs `general`); if unresolved, assume `general` and state the assumption.
 
-**Clarify Requirements:**
-- Before proposing approaches, explicitly confirm the following based on workflow type:
-  - `feature`:
-    - critical user journey
-    - user story
-    - acceptance criteria
-    - how to test (manual test, automatic test with synthetic data, automatic test with real data)
-    - identify missing information required to implement with acceptance test-driven development (ATDD)
-  - `general`:
-    - purpose
-    - constraints
-    - success criteria
+**Confirm Requirements (Gate):**
+- You MUST present a **Requirements Summary** based on the `workflow type` and get approval BEFORE proposing solutions.
+
+- **For `feature` workflow:**
+  - **User Story:** "As a [role], I want [feature], so that [benefit]"
+  - **Acceptance Criteria:** Bulleted list of verifiable conditions
+  - **Test Strategy:** How this will be tested (Unit/Integration/Manual)
+  - **ATDD Prep:** Identify any missing info for Acceptance Test-Driven Development
+
+- **For `general` workflow:**
+  - **Goal:** Clear statement of what success looks like
+  - **Constraints:** Technical or business limitations
+  - **Success Criteria:** Definition of done
+
+- **Do NOT proceed to "Exploring approaches" until the user explicitly approves this summary.**
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
@@ -96,8 +103,8 @@ digraph brainstorming {
 ## After the Design
 
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
+- **REQUIRED SUB-SKILL:** Activate `writing-clearly-and-concisely` skill to ensure high-quality prose
+- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md` using the activated skill's guidelines
 - Commit the design document to git
 
 **Implementation:**

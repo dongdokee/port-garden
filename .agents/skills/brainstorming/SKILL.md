@@ -38,7 +38,7 @@ Classification rules:
 - Process intents in the order the user mentioned them.
 - If the user explicitly states priority (for example, "first", "priority", "most important"), follow that over mention order.
 - If safety or dependency constraints require reordering, explain why and get user confirmation.
-- Behavioral-change disambiguation: use `behavioral-change:bugfix` for unintended behavior fixes, `behavioral-change:modify-feature` for product behavior changes, and `behavioral-change:enhance-quality-attribute` when quality attributes are the primary goal.
+- Behavioral-change disambiguation: `bugfix` = unintended behavior restoration; `modify-feature` = intentional product behavior change; `enhance-quality-attribute` = quality attribute as primary goal.
 - `general` is intentionally free-form: no preset question template; the agent uses judgment.
 
 ## Checklist
@@ -86,60 +86,50 @@ digraph brainstorming {
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
+- Shared ATDD status for behavioral-change categories (`new-feature`, `modify-feature`, `bugfix`, `enhance-quality-attribute`):
+  - `ATDD-ready`: required evidence exists and verification checks are executable now
+  - `ATDD-blocked`: required evidence is missing, or verification checks are not executable now
+  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions
 - Focus on understanding details that match each selected intent category:
-- `behavioral-change:new-feature`:
-  - (optional) Critical User Journey: identify it if clear; skip if ambiguous
-  - Goal: define a User Story (`As a ... I want ... so that ...`)
-  - Non-Goal: define explicit out-of-scope boundaries
-  - Verification evidence strategy:
-    - Can synthetic data be generated from rules/specs to test major behaviors?
-    - Can acceptance testing be executed now?
-      - `ATDD-ready`: rule/spec-based verification is feasible, or a test dataset with input/expected output already exists
-      - `ATDD-blocked`: no dataset exists now and synthetic data generation is not feasible
-  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions (what data is needed and when it will be available)
-- `behavioral-change:modify-feature`:
-  - Current behavior baseline: define current externally observable behavior that will change
-  - Change goal: define intended behavior delta (from X to Y) and why the change is needed
-  - Non-Goal: define explicit unchanged behavior boundaries
-  - Compatibility impact (if applicable): identify API/UI/data contract impacts and migration needs
-  - Verification evidence strategy:
-    - `ATDD-ready`: baseline evidence exists, target expected outcomes (happy path + critical exception) are defined, and functional regression checks are executable now
-    - `ATDD-blocked`: baseline evidence is missing, target expected outcomes are not defined, or functional regression checks are not executable now
-  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions
-- `behavioral-change:bugfix`:
-  - Bug definition: define expected behavior vs actual behavior and user-visible impact
-  - Reproduction baseline: define reproducible steps, environment, and trigger conditions
-  - Functional acceptance continuity: keep existing functional acceptance criteria unchanged by default; extend only if bug coverage is missing
-  - Regression baseline: reuse existing acceptance tests to verify no functional regression
-  - Scope of fix: define affected surface and explicit non-goals
-  - Root-cause hypothesis: define the current best hypothesis and confidence level
-  - Verification evidence strategy:
-    - `ATDD-ready`: reproducible failing case exists, and functional regression checks are executable now
-    - `ATDD-blocked`: failing case cannot be reproduced now, or functional regression checks are not executable now
-  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions
-- `behavioral-change:enhance-quality-attribute`:
-  - Functional acceptance continuity: keep existing functional acceptance criteria unchanged
-  - Regression baseline: reuse existing acceptance tests to verify no functional regression
-  - Quality target: define primary quality attribute (performance, security, reliability, availability) with measurable baseline and target threshold
-  - Behavioral impact boundary: define externally observable behavior changes and explicit non-goals
-  - Trade-offs: define acceptable trade-offs
-  - Verification evidence strategy:
-    - `ATDD-ready`: existing functional acceptance tests are available, and quality metrics can be measured now
-    - `ATDD-blocked`: existing functional acceptance tests are missing, or quality metrics cannot be measured now
-  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions
-- `structural-change`:
-  - Behavior-invariance contract: define externally observable behavior that must remain unchanged
-  - Change scope: define structural targets (modules, boundaries, dependencies) and explicit non-goals
-  - Regression strategy: define layered checks for behavior invariance (unit tests for local invariants, plus contract/integration/acceptance checks for externally observable behavior)
-  - If regression checks are not executable now, record unblock conditions
-- `documentation`:
-  - Documentation goal: define target audience and intended user outcome
-  - Source of truth: define authoritative references and version/date boundaries
-  - Deliverables: define required document types and explicit non-goals
-  - Quality criteria: define clarity, accuracy, completeness, and consistency expectations
-  - Verification strategy: define how documentation quality will be checked (fact check against source of truth, consistency check with current behavior/interfaces, reviewer/readability check)
-  - If verification checks are not executable now, record unblock conditions
-- `general`: purpose, constraints, success criteria
+  - `behavioral-change:new-feature`:
+    - (optional) Critical User Journey: identify it if clear; skip if ambiguous
+    - Goal: define a User Story (`As a ... I want ... so that ...`)
+    - Non-Goal: define explicit out-of-scope boundaries
+    - Verification evidence: rule/spec-based synthetic checks for major behaviors, or an existing test dataset with input/expected output
+  - `behavioral-change:modify-feature`:
+    - Current behavior baseline: define current externally observable behavior that will change
+    - Change goal: define intended behavior delta (from X to Y) and why the change is needed
+    - Non-Goal: define explicit unchanged behavior boundaries
+    - Compatibility impact (if applicable): identify API/UI/data contract impacts and migration needs
+    - Verification evidence: baseline evidence, defined target outcomes (happy path + critical exception), executable functional regression checks
+  - `behavioral-change:bugfix`:
+    - Bug definition: define expected behavior vs actual behavior and user-visible impact
+    - Reproduction baseline: define reproducible steps, environment, and trigger conditions
+    - Functional acceptance continuity: keep existing functional acceptance criteria unchanged by default; extend only if bug coverage is missing
+    - Regression baseline: reuse existing acceptance tests to verify no functional regression
+    - Scope of fix: define affected surface and explicit non-goals
+    - Root-cause hypothesis: define the current best hypothesis and confidence level
+    - Verification evidence: reproducible failing case and executable functional regression checks
+  - `behavioral-change:enhance-quality-attribute`:
+    - Functional acceptance continuity: keep existing functional acceptance criteria unchanged
+    - Regression baseline: reuse existing acceptance tests to verify no functional regression
+    - Quality target: define primary quality attribute (performance, security, reliability, availability) with measurable baseline and target threshold
+    - Behavioral impact boundary: define externally observable behavior changes and explicit non-goals
+    - Trade-offs: define acceptable trade-offs
+    - Verification evidence: existing functional acceptance tests and measurable quality metrics
+  - Shared execution gate for non-behavioral categories (`structural-change`, `documentation`):
+    - If verification checks are not executable now, record unblock conditions
+  - `structural-change`:
+    - Behavior-invariance contract: define externally observable behavior that must remain unchanged
+    - Change scope: define structural targets (modules, boundaries, dependencies) and explicit non-goals
+    - Regression strategy: define layered checks for behavior invariance (unit tests for local invariants, plus contract/integration/acceptance checks for externally observable behavior)
+  - `documentation`:
+    - Documentation goal: define target audience and intended user outcome
+    - Source of truth: define authoritative references and version/date boundaries
+    - Deliverables: define required document types and explicit non-goals
+    - Quality criteria: define clarity, accuracy, completeness, and consistency expectations
+    - Verification strategy: define how documentation quality will be checked (fact check against source of truth, consistency check with current behavior/interfaces, reviewer/readability check)
+  - `general`: purpose, constraints, success criteria
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs

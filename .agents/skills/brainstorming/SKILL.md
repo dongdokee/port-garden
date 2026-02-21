@@ -21,48 +21,24 @@ Every project goes through this process. A todo list, a single-function utility,
 
 ## Checklist
 
-You MUST create a task/todo for each of these items and complete them in order:
+You MUST create a task for each of these items and complete them in order:
 
-1. **Classify request intent categoryies** — identify one or more categories from `Intent Categories`
-2. **Explore project context** — check files, docs, recent commits
-3. **Ask clarifying questions** — one at a time, understand requirements. get user approval once requirements are fully understood
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
-
-## Request Intent Categories
-
-Classify request intent category(ies) before project context exploration.
-
-| intent category | use when |
-|---|---|
-| `behavioral-change:new-feature` | User wants a new externally observable capability |
-| `behavioral-change:modify-feature` | User wants to change behavior of an existing capability |
-| `behavioral-change:bugfix` | User wants to fix unintended behavior |
-| `behavioral-change:enhance-quality-attribute` | User wants behavioral changes for performance, security, reliability, or availability |
-| `structural-change` | User wants structural changes without external behavior changes |
-| `documentation` | User wants documentation-focused outputs |
-| `general` | Else case when none of the categories above fit clearly |
-
-### Requirements to Understand for Each Category
-
-**behavioral-change:new-feature:**
-- (optional) Critical User Journey: identify it if clear; skip if ambiguous
-- Goal: define a User Story (`As a ... I want ... so that ...`)
-- Non-Goal: define explicit out-of-scope boundaries
-- Acceptance Criteria (AC)
-
-**general:**
-- purpose
-- constraints
-- success criteria
+1. **Classify request intent categories** — identify one or more applicable categories from `Request Intent Categories` list
+2. **Identify category-specific requirement components** - define the scope of focus for subsequent understanding and exploration
+3. **Explore project context** — check files, docs, recent commits
+4. **Ask clarifying questions** — one at a time, understand requirements. get user approval once requirements are fully understood
+5. **Present requirements** — get user approval for requirements
+6. **Propose 2-3 approaches** — with trade-offs and your recommendation
+7. **Present design** — in sections scaled to their complexity, get user approval after each section
+8. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
     "Classify request intent categories" [shape=box];
+    "Identify category-specific requirement components" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Present requirements" [shape=box];
@@ -73,7 +49,8 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Classify request intent categories" -> "Explore project context";
+    "Classify request intent categories" -> "Identify category-specific requirement components";
+    "Identify category-specific requirement components" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Present requirements";
     "Present requirements" -> "User approves requirements?";
@@ -91,15 +68,34 @@ digraph brainstorming {
 
 ## The Process
 
-**Understanding the request intent categories:**
-- Classify request intent categories to scope requirements exploration
+**Identifying the requirement components to define the exploration scope:**
+- Classify request intent categories to scope requirements exploration:
+    | intent category | use when |
+    |---|---|
+    | `behavioral-change:new-feature` | User wants a new externally observable capability |
+    | `behavioral-change:modify-feature` | User wants to change behavior of an existing capability |
+    | `behavioral-change:bugfix` | User wants to fix unintended behavior |
+    | `behavioral-change:enhance-quality-attribute` | User wants behavioral changes for performance, security, reliability, or availability |
+    | `structural-change` | User wants structural changes without external behavior changes |
+    | `documentation` | User wants documentation-focused outputs |
+    | `general` | Else case when none of the categories above fit clearly |
+- Identify category-specific requirement components:
+    - **behavioral-change:new-feature:**
+        - Critical User Journey: identify it if clear; skip if ambiguous
+        - Goal: define a User Story (`As a ... I want ... so that ...`)
+        - Non-Goal: define explicit out-of-scope boundaries
+        - Acceptance Criteria (AC): use Gherkin syntax
+    - **general:**
+        - purpose
+        - constraints
+        - success criteria
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding requirements
+- Focus on understanding requirements (Category-specific Requirements to Understand)
 - Ask once requirements are fully understood whether it looks right so far
 
 **Exploring approaches:**

@@ -19,6 +19,18 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
+## Checklist
+
+You MUST create a task/todo for each of these items and complete them in order:
+
+1. **Classify request intent categoryies** — identify one or more categories from `Intent Categories`
+2. **Explore project context** — check files, docs, recent commits
+3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+
 ## Intent Categories
 
 Classify request intent category(ies) before project context exploration.
@@ -33,31 +45,11 @@ Classify request intent category(ies) before project context exploration.
 | `documentation` | User wants documentation-focused outputs |
 | `general` | Else case when none of the categories above fit clearly |
 
-Classification rules:
-- Split multi-intent prompts into an explicit intent list.
-- Process intents in the order the user mentioned them.
-- If the user explicitly states priority (for example, "first", "priority", "most important"), follow that over mention order.
-- If safety or dependency constraints require reordering, explain why and get user confirmation.
-- Behavioral-change disambiguation: `bugfix` = unintended behavior restoration; `modify-feature` = intentional product behavior change; `enhance-quality-attribute` = quality attribute as primary goal.
-- `general` is intentionally free-form: no preset question template; the agent uses judgment.
-
-## Checklist
-
-You MUST create a task for each of these items and complete them in order:
-
-1. **Classify request intent category(ies)** — identify one or more categories from `Intent Categories`
-2. **Explore project context** — check files, docs, recent commits
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
-
 ## Process Flow
 
 ```dot
 digraph brainstorming {
-    "Classify request intent category(ies)" [shape=box];
+    "Classify request intent categoryies" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 approaches" [shape=box];
@@ -66,7 +58,7 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Classify request intent category(ies)" -> "Explore project context";
+    "Classify request intent categoryies" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
@@ -86,50 +78,7 @@ digraph brainstorming {
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Shared ATDD status for behavioral-change categories (`new-feature`, `modify-feature`, `bugfix`, `enhance-quality-attribute`):
-  - `ATDD-ready`: required evidence exists and verification checks are executable now
-  - `ATDD-blocked`: required evidence is missing, or verification checks are not executable now
-  - If `ATDD-blocked`, mark acceptance testing as deferred and record unblock conditions
-- Focus on understanding details that match each selected intent category:
-  - `behavioral-change:new-feature`:
-    - (optional) Critical User Journey: identify it if clear; skip if ambiguous
-    - Goal: define a User Story (`As a ... I want ... so that ...`)
-    - Non-Goal: define explicit out-of-scope boundaries
-    - Verification evidence: rule/spec-based synthetic checks for major behaviors, or an existing test dataset with input/expected output
-  - `behavioral-change:modify-feature`:
-    - Current behavior baseline: define current externally observable behavior that will change
-    - Change goal: define intended behavior delta (from X to Y) and why the change is needed
-    - Non-Goal: define explicit unchanged behavior boundaries
-    - Compatibility impact (if applicable): identify API/UI/data contract impacts and migration needs
-    - Verification evidence: baseline evidence, defined target outcomes (happy path + critical exception), executable functional regression checks
-  - `behavioral-change:bugfix`:
-    - Bug definition: define expected behavior vs actual behavior and user-visible impact
-    - Reproduction baseline: define reproducible steps, environment, and trigger conditions
-    - Functional acceptance continuity: keep existing functional acceptance criteria unchanged by default; extend only if bug coverage is missing
-    - Regression baseline: reuse existing acceptance tests to verify no functional regression
-    - Scope of fix: define affected surface and explicit non-goals
-    - Root-cause hypothesis: define the current best hypothesis and confidence level
-    - Verification evidence: reproducible failing case and executable functional regression checks
-  - `behavioral-change:enhance-quality-attribute`:
-    - Functional acceptance continuity: keep existing functional acceptance criteria unchanged
-    - Regression baseline: reuse existing acceptance tests to verify no functional regression
-    - Quality target: define primary quality attribute (performance, security, reliability, availability) with measurable baseline and target threshold
-    - Behavioral impact boundary: define externally observable behavior changes and explicit non-goals
-    - Trade-offs: define acceptable trade-offs
-    - Verification evidence: existing functional acceptance tests and measurable quality metrics
-  - Shared execution gate for non-behavioral categories (`structural-change`, `documentation`):
-    - If verification checks are not executable now, record unblock conditions
-  - `structural-change`:
-    - Behavior-invariance contract: define externally observable behavior that must remain unchanged
-    - Change scope: define structural targets (modules, boundaries, dependencies) and explicit non-goals
-    - Regression strategy: define layered checks for behavior invariance (unit tests for local invariants, plus contract/integration/acceptance checks for externally observable behavior)
-  - `documentation`:
-    - Documentation goal: define target audience and intended user outcome
-    - Source of truth: define authoritative references and version/date boundaries
-    - Deliverables: define required document types and explicit non-goals
-    - Quality criteria: define clarity, accuracy, completeness, and consistency expectations
-    - Verification strategy: define how documentation quality will be checked (fact check against source of truth, consistency check with current behavior/interfaces, reviewer/readability check)
-  - `general`: purpose, constraints, success criteria
+- Focus on understanding: purpose, constraints, success criteria
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs

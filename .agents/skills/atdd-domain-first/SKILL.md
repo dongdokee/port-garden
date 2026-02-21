@@ -70,7 +70,7 @@ Escalate to UI-first acceptance only when:
 
 ### Step 3: Write Failing Acceptance Tests First
 
-- Name tests by observable behavior using BDD style (`should_<outcome>_when_<condition>` or `given_<state>_when_<action>_then_<outcome>`).
+- Name tests by observable behavior using BDD style (`given_<state>_when_<action>_then_<outcome>` or `when_<action>_then_<outcome>`).
 - Keep tests black-box at the selected boundary.
 - Avoid asserting internal implementation details.
 

@@ -99,7 +99,7 @@ Task ordering rules in AC/Gherkin mode:
 **Step 1: Write the failing test**
 
 ```python
-def should_return_expected_when_given_valid_input():
+def test_specific_behavior():
     result = function(input)
     assert result == expected
 ```

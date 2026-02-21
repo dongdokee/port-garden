@@ -25,7 +25,7 @@ You MUST create a task/todo for each of these items and complete them in order:
 
 1. **Classify request intent categoryies** — identify one or more categories from `Intent Categories`
 2. **Explore project context** — check files, docs, recent commits
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+3. **Ask clarifying questions** — one at a time, understand requirements. get user approval once requirements are fully understood
 4. **Propose 2-3 approaches** — with trade-offs and your recommendation
 5. **Present design** — in sections scaled to their complexity, get user approval after each section
 6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
@@ -45,6 +45,19 @@ Classify request intent category(ies) before project context exploration.
 | `documentation` | User wants documentation-focused outputs |
 | `general` | Else case when none of the categories above fit clearly |
 
+### Requirements to Understand for Each Category
+
+**behavioral-change:new-feature:**
+- (optional) Critical User Journey: identify it if clear; skip if ambiguous
+- Goal: define a User Story (`As a ... I want ... so that ...`)
+- Non-Goal: define explicit out-of-scope boundaries
+- Acceptance Criteria (AC)
+
+**general:**
+- purpose
+- constraints
+- success criteria
+
 ## Process Flow
 
 ```dot
@@ -52,6 +65,8 @@ digraph brainstorming {
     "Classify request intent categories" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
+    "Present requirements" [shape=box];
+    "User approves requirements?" [shape=diamond];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
@@ -60,7 +75,10 @@ digraph brainstorming {
 
     "Classify request intent categories" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Ask clarifying questions" -> "Present requirements";
+    "Present requirements" -> "User approves requirements?";
+    "User approves requirements?" -> "Ask clarifying questions" [label="no, ask"];
+    "User approves requirements?" -> "Propose 2-3 approaches" [label="yes"];
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -81,7 +99,8 @@ digraph brainstorming {
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+- Focus on understanding requirements
+- Ask once requirements are fully understood whether it looks right so far
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs

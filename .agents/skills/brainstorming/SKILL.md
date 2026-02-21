@@ -31,7 +31,7 @@ You MUST create a task/todo for each of these items and complete them in order:
 6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
 7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
-## Intent Categories
+## Request Intent Categories
 
 Classify request intent category(ies) before project context exploration.
 
@@ -49,7 +49,7 @@ Classify request intent category(ies) before project context exploration.
 
 ```dot
 digraph brainstorming {
-    "Classify request intent categoryies" [shape=box];
+    "Classify request intent categories" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 approaches" [shape=box];
@@ -58,7 +58,7 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Classify request intent categoryies" -> "Explore project context";
+    "Classify request intent categories" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
@@ -72,6 +72,9 @@ digraph brainstorming {
 **The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
 
 ## The Process
+
+**Understanding the request intent categories:**
+- Classify request intent categories
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)

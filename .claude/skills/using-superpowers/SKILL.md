@@ -11,11 +11,19 @@ IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
 This is not negotiable. This is not optional. You cannot rationalize your way out of this.
 </EXTREMELY-IMPORTANT>
 
+## Tool Name Mapping
+
+| Placeholder | Claude Code | Gemini CLI | Codex |
+|---|---|---|---|
+| `SKILL_TOOL` | `Skill` | `activate_skill` | N/A (Check Codex's documentation for how skills are loaded) |
+| `PLAN_MODE_TOOL` | `EnterPlanMode` | `enter_plan_mode` | N/A (no self-enter plan mode tool) |
+| `TODO_TOOL` | `TodoWrite` | `write_todos` if the tool is callable; otherwise maintain an equivalent todo list (one item per checklist entry) with statuses `pending`/`in_progress`/`completed` and at most one `in_progress` item. | `update_plan` |
+
 ## How to Access Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the `Read` tool on skill files.
+Use `SKILL_TOOL` from the mapping table. When you invoke a skill, its content is loaded and presented to you—follow it directly.
 
-**In Gemini CLI:** Use the `activate_skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the `read_file` tool on skill files.
+Never use skill-file read tools for loading skills (`Read` in Claude Code, `read_file` in Gemini CLI).
 
 **In other environments:** Check your platform's documentation for how skills are loaded.
 
@@ -28,30 +36,30 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 ```dot
 digraph skill_flow {
     "User message received" [shape=doublecircle];
-    "About to EnterPlanMode?" [shape=doublecircle];
+    "About to use PLAN_MODE_TOOL?" [shape=doublecircle];
     "Already brainstormed?" [shape=diamond];
     "Invoke brainstorming skill" [shape=box];
     "Might any skill apply?" [shape=diamond];
-    "Invoke Skill tool" [shape=box];
+    "Invoke SKILL_TOOL" [shape=box];
     "Announce: 'Using [skill] to [purpose]'" [shape=box];
     "Has checklist?" [shape=diamond];
-    "Create TodoWrite todo per item" [shape=box];
+    "Create TODO_TOOL todo per item" [shape=box];
     "Follow skill exactly" [shape=box];
     "Respond (including clarifications)" [shape=doublecircle];
 
-    "About to EnterPlanMode?" -> "Already brainstormed?";
+    "About to use PLAN_MODE_TOOL?" -> "Already brainstormed?";
     "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
     "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
     "Invoke brainstorming skill" -> "Might any skill apply?";
 
     "User message received" -> "Might any skill apply?";
-    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
+    "Might any skill apply?" -> "Invoke SKILL_TOOL" [label="yes, even 1%"];
     "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
-    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
+    "Invoke SKILL_TOOL" -> "Announce: 'Using [skill] to [purpose]'";
     "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
-    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
+    "Has checklist?" -> "Create TODO_TOOL todo per item" [label="yes"];
     "Has checklist?" -> "Follow skill exactly" [label="no"];
-    "Create TodoWrite todo per item" -> "Follow skill exactly";
+    "Create TODO_TOOL todo per item" -> "Follow skill exactly";
 }
 ```
 

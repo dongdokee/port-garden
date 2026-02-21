@@ -74,7 +74,7 @@ digraph brainstorming {
 ## The Process
 
 **Understanding the request intent categories:**
-- Classify request intent categories
+- Classify request intent categories to scope requirements exploration
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)

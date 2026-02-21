@@ -24,10 +24,12 @@ Do not use as the only strategy when behavior is primarily UI interaction (navig
 
 When invoked during `writing-plans`:
 
-1. Add AC ids (`AC-01`, `AC-02`, ...).
+1. Add AC ids (`AC-01`, `AC-02`, ...) in design/plan traceability context.
 2. Build an AC Traceability Matrix in the plan.
-3. Put acceptance-test-first tasks at the UseCase/domain boundary ahead of implementation tasks.
-4. Keep compatibility with non-AC planning by applying this workflow only when explicit AC/Gherkin exists.
+3. Treat AC ids as document-local identifiers used only for design/plan traceability.
+4. Do not propagate AC ids into non-traceability artifacts; name those artifacts by behavior or scenario.
+5. Put acceptance-test-first tasks at the UseCase/domain boundary ahead of implementation tasks.
+6. Keep compatibility with non-AC planning by applying this workflow only when explicit AC/Gherkin exists.
 
 ## Core Rules
 
@@ -44,7 +46,7 @@ When invoked during `writing-plans`:
 
 ### Step 1: Normalize AC Into Test Cases
 
-- Assign stable ids such as `AC-01`, `AC-02`.
+- Assign stable local ids such as `AC-01`, `AC-02`.
 - Convert each Given/When/Then into setup/action/assertion.
 - Define explicit pass criteria and expected error messages.
 
@@ -68,7 +70,7 @@ Escalate to UI-first acceptance only when:
 
 ### Step 3: Write Failing Acceptance Tests First
 
-- Create tests named by AC id.
+- Name tests by observable behavior using BDD style (`should_<outcome>_when_<condition>` or `given_<state>_when_<action>_then_<outcome>`).
 - Keep tests black-box at the selected boundary.
 - Avoid asserting internal implementation details.
 
@@ -76,7 +78,7 @@ Template:
 
 ```kotlin
 @Test
-fun ac_03_target_sum_not_100_blocks_calculation() {
+fun should_block_calculation_when_target_sum_is_out_of_tolerance() {
     val input = sampleInput(targetSum = 90.toBigDecimal())
     val result = calculateRebalanceUseCase(input)
     assertTrue(result is ValidationError)

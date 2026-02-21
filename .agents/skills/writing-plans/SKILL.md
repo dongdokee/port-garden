@@ -77,10 +77,12 @@ When in AC/Gherkin mode, include the following sections before task breakdown.
 
 Task ordering rules in AC/Gherkin mode:
 
-1. First tasks MUST establish AC ids and failing acceptance tests at UseCase/domain boundary.
+1. First tasks MUST establish AC ids in plan traceability and failing acceptance tests at UseCase/domain boundary.
 2. Implementation tasks come only after failing acceptance tests are defined.
 3. UI acceptance coverage is thin smoke unless the requirement is UI-native behavior.
 4. Every task must include `Covers AC:` with either AC ids or `N/A (infrastructure)`.
+5. AC ids are document-local and traceability-only identifiers.
+6. Do not propagate AC ids into non-traceability artifacts; use behavior/scenario naming there.
 
 ## Task Structure
 
@@ -97,7 +99,7 @@ Task ordering rules in AC/Gherkin mode:
 **Step 1: Write the failing test**
 
 ```python
-def test_specific_behavior():
+def should_return_expected_when_given_valid_input():
     result = function(input)
     assert result == expected
 ```
@@ -134,6 +136,7 @@ git commit -m "feat: add specific feature"
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
 - In AC/Gherkin mode, no plan is complete without AC-to-test traceability
+- Keep AC ids in traceability fields (AC matrix, Covers AC) only; use behavior-based names elsewhere.
 
 ## Completion Check (Mode-Aware)
 

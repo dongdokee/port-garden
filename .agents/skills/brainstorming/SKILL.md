@@ -84,7 +84,7 @@ digraph brainstorming {
         - Critical User Journey: identify it if clear; skip if ambiguous
         - Goal: define a User Story (`As a ... I want ... so that ...`)
         - Non-Goal: define explicit out-of-scope boundaries
-        - Acceptance Criteria (AC): use Gherkin syntax
+        - Acceptance Criteria (AC): use Gherkin syntax for design/plan traceability
     - **general:**
         - purpose
         - constraints

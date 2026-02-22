@@ -26,12 +26,17 @@ You MUST create a task for each of these items and complete them in order:
 1. **Classify request intent categories** — identify one or more applicable categories from `Request Intent Categories` list
 2. **Identify category-specific requirement components** - define the scope of focus for subsequent understanding and exploration
 3. **Explore project context** — check files, docs, recent commits
-4. **Ask clarifying questions** — one at a time, understand requirements. get user approval once requirements are fully understood
-5. **Present requirements** — get user approval for requirements
+4. **Ask clarifying questions** — one at a time, understand all category-specific requirement components
+5. **Present requirements** — get user approval for requirements once all category-specific requirement components are fully understood
 6. **Propose 2-3 approaches** — with trade-offs and your recommendation
 7. **Present design** — in sections scaled to their complexity, get user approval after each section
 8. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
 9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+
+Use TODO_TOOL:
+- Claude Code: `TodoWrite`
+- Gemini CLI: `activate_skill("write-todos-gemini")`
+- Codex: `update_plan`
 
 ## Process Flow
 
@@ -81,10 +86,10 @@ digraph brainstorming {
     | `general` | Else case when none of the categories above fit clearly |
 - Identify category-specific requirement components:
     - **behavioral-change:new-feature:**
-        - Critical User Journey: identify it if clear; skip if ambiguous
-        - Goal: define a User Story (`As a ... I want ... so that ...`)
-        - Non-Goal: define explicit out-of-scope boundaries
-        - Acceptance Criteria (AC): use Gherkin syntax for design/plan traceability
+        - (OPTIONAL) Critical User Journey: identify it if clear; skip if ambiguous
+        - (MANDATORY) Goal: define a User Story (`As a ... I want ... so that ...`)
+        - (MANDATORY) Non-Goal: define explicit out-of-scope boundaries
+        - (MANDATORY) Acceptance Criteria (AC): use Gherkin syntax for design/plan traceability
     - **general:**
         - purpose
         - constraints
@@ -95,8 +100,8 @@ digraph brainstorming {
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding requirements (Category-specific Requirements to Understand)
-- Ask once requirements are fully understood whether it looks right so far
+- Focus on understanding ALL category-specific requirement components
+- Ask whether it looks right so far once all category-specific requirement components are fully understood
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs

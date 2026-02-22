@@ -17,7 +17,7 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 |---|---|---|---|
 | `SKILL_TOOL` | `Skill` | `activate_skill` | N/A (Check Codex's documentation for how skills are loaded) |
 | `PLAN_MODE_TOOL` | `EnterPlanMode` | `enter_plan_mode` | N/A (no self-enter plan mode tool) |
-| `TODO_TOOL` | `TodoWrite` | `write_todos` if the tool is callable; otherwise maintain an equivalent todo list (one item per checklist entry) with statuses `pending`/`in_progress`/`completed` and at most one `in_progress` item. | `update_plan` |
+| `TODO_TOOL` | `TodoWrite` | `activate_skill("write-todos-gemini")` | `update_plan` |
 
 ## How to Access Skills
 

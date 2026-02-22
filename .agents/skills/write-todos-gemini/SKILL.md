@@ -1,5 +1,5 @@
 ---
-name: write-todos
+name: write-todos-gemini
 description: Use when write_todos is unavailable and another skill or the user explicitly requests structured todo tracking - do not auto-trigger
 ---
 

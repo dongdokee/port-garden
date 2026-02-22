@@ -46,6 +46,7 @@ digraph brainstorming {
     "Identify category-specific requirement components" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
+    "All identified category-specific requirement components are clarified?" [shape=diamond];
     "Present requirements" [shape=box];
     "User approves requirements?" [shape=diamond];
     "Propose 2-3 approaches" [shape=box];
@@ -57,9 +58,11 @@ digraph brainstorming {
     "Classify request intent categories" -> "Identify category-specific requirement components";
     "Identify category-specific requirement components" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Present requirements";
+    "Ask clarifying questions" -> "All identified category-specific requirement components are clarified?";
+    "All identified category-specific requirement components are clarified?" -> "Present requirements" [label="yes"];
+    "All identified category-specific requirement components are clarified?" -> "Ask clarifying questions" [label="no, ask more"];
     "Present requirements" -> "User approves requirements?";
-    "User approves requirements?" -> "Ask clarifying questions" [label="no, ask"];
+    "User approves requirements?" -> "Ask clarifying questions" [label="no, ask more"];
     "User approves requirements?" -> "Propose 2-3 approaches" [label="yes"];
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
@@ -101,7 +104,7 @@ digraph brainstorming {
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding ALL category-specific requirement components
-- Ask whether it looks right so far once all category-specific requirement components are fully understood
+- Once all category-specific requirement components are clarified, present the requirements to the user and ask whether it looks right so far
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs

@@ -9,6 +9,8 @@ description: Use when write_todos is unavailable and another skill or the user e
 
 Text-based todo tracking for Gemini CLI when `write_todos` is not available as a native tool.
 
+**STATELESS OUTPUT ONLY.** You must maintain the todo list state by printing the FULL list in your response. Do NOT write this list to a file. The history of the chat is your memory.
+
 **Explicit invocation only.** Do not load unless another skill or the user explicitly calls for it.
 
 ## Format
@@ -23,6 +25,8 @@ Text-based todo tracking for Gemini CLI when `write_todos` is not available as a
 Statuses: `pending` → `in_progress` → `completed`
 
 ## Rules
+
+**NO FILES.** Never write the todo list to a file (like `.gemini/todo_list.md`). Print it in the chat.
 
 **At most one `in_progress` item at any time.**
 

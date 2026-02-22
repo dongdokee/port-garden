@@ -54,6 +54,38 @@ digraph brainstorming {
 
 **The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
 
+## What to Explore/Understand
+
+You MUST explore and understand these items before writing design doc.
+
+### User Intent
+
+To scope requirements and design, classify user intent into one of the following categories:
+| user intent category | use when |
+|---|---|
+| `behavioral-change:new-feature` | User wants a new externally observable capability |
+| `behavioral-change:modify-feature` | User wants to change behavior of an existing capability |
+| `behavioral-change:bugfix` | User wants to fix unintended behavior |
+| `behavioral-change:enhance-quality-attribute` | User wants behavioral changes for performance, security, reliability, or availability |
+| `structural-change` | User wants structural changes without external behavior changes |
+| `documentation` | User wants documentation-focused outputs |
+| `general` | Else case when none of the categories above fit clearly |
+
+### Requirements
+
+**behavioral-change:new-feature:**
+- **Goal**:
+  - **User story**: What the user wants to achieve and why, in "As a [role], I want [capability] so that [benefit]" format.
+  - **Critical user journey**: Step-by-step user flow from trigger to outcome.
+- **Non-Goal**: Capabilities or behaviors that might be reasonably expected but are intentionally excluded from this scope.
+- **Acceptance Criteria (AC)**: Verifiable conditions that confirm the feature works as intended, written in Gherkin syntax (Feature/Scenario/Given/When/Then). Cover happy path, edge cases, and error cases.
+
+[TBD: rest of user intent category]
+
+### Design
+
+[TBD: architecture, components, data flow, error handling, testing]
+
 ## The Process
 
 **Understanding the idea:**
@@ -79,7 +111,7 @@ digraph brainstorming {
 
 **Documentation:**
 - Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
+- Use writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
 **Implementation:**

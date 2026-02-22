@@ -23,47 +23,27 @@ Every project goes through this process. A todo list, a single-function utility,
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Classify request intent categories** — identify one or more applicable categories from `Request Intent Categories` list
-2. **Identify category-specific requirement components** - define the scope of focus for subsequent understanding and exploration
-3. **Explore project context** — check files, docs, recent commits
-4. **Ask clarifying questions** — one at a time, understand all category-specific requirement components
-5. **Present requirements** — get user approval for requirements once all category-specific requirement components are fully understood
-6. **Propose 2-3 approaches** — with trade-offs and your recommendation
-7. **Present design** — in sections scaled to their complexity, get user approval after each section
-8. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
-
-Use TODO_TOOL:
-- Claude Code: `TodoWrite`
-- Gemini CLI: `activate_skill("write-todos-gemini")`
-- Codex: `update_plan`
+1. **Explore project context** — check files, docs, recent commits
+2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+3. **Propose 2-3 approaches** — with trade-offs and your recommendation
+4. **Present design** — in sections scaled to their complexity, get user approval after each section
+5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
-    "Classify request intent categories" [shape=box];
-    "Identify category-specific requirement components" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
-    "All identified category-specific requirement components are clarified?" [shape=diamond];
-    "Present requirements" [shape=box];
-    "User approves requirements?" [shape=diamond];
     "Propose 2-3 approaches" [shape=box];
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Classify request intent categories" -> "Identify category-specific requirement components";
-    "Identify category-specific requirement components" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "All identified category-specific requirement components are clarified?";
-    "All identified category-specific requirement components are clarified?" -> "Present requirements" [label="yes"];
-    "All identified category-specific requirement components are clarified?" -> "Ask clarifying questions" [label="no, ask more"];
-    "Present requirements" -> "User approves requirements?";
-    "User approves requirements?" -> "Ask clarifying questions" [label="no, ask more"];
-    "User approves requirements?" -> "Propose 2-3 approaches" [label="yes"];
+    "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
@@ -76,35 +56,12 @@ digraph brainstorming {
 
 ## The Process
 
-**Identifying the requirement components to define the exploration scope:**
-- Classify request intent categories to scope requirements exploration:
-    | intent category | use when |
-    |---|---|
-    | `behavioral-change:new-feature` | User wants a new externally observable capability |
-    | `behavioral-change:modify-feature` | User wants to change behavior of an existing capability |
-    | `behavioral-change:bugfix` | User wants to fix unintended behavior |
-    | `behavioral-change:enhance-quality-attribute` | User wants behavioral changes for performance, security, reliability, or availability |
-    | `structural-change` | User wants structural changes without external behavior changes |
-    | `documentation` | User wants documentation-focused outputs |
-    | `general` | Else case when none of the categories above fit clearly |
-- Identify category-specific requirement components:
-    - **behavioral-change:new-feature:**
-        - (OPTIONAL) Critical User Journey: identify it if clear; skip if ambiguous
-        - (MANDATORY) Goal: define a User Story (`As a ... I want ... so that ...`)
-        - (MANDATORY) Non-Goal: define explicit out-of-scope boundaries
-        - (MANDATORY) Acceptance Criteria (AC): use Gherkin syntax for design/plan traceability
-    - **general:**
-        - purpose
-        - constraints
-        - success criteria
-
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding ALL category-specific requirement components
-- Once all category-specific requirement components are clarified, present the requirements to the user and ask whether it looks right so far
+- Focus on understanding: purpose, constraints, success criteria
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
@@ -122,7 +79,7 @@ digraph brainstorming {
 
 **Documentation:**
 - Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use writing-clearly-and-concisely skill if available
+- Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
 **Implementation:**

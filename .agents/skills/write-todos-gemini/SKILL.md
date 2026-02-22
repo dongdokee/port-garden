@@ -32,6 +32,8 @@ Statuses: `pending` → `in_progress` → `completed`
 
 Before marking any item `in_progress`: confirm no other item is currently `in_progress`.
 
+**Sequential Execution.** Tasks MUST be processed in strict numerical order. You CANNOT mark task N as `in_progress` or `completed` if any task < N is still `pending` or `in_progress`.
+
 **On every update:** reprint the full list. Never show a diff. Current state must always be visible.
 
 ## Operations

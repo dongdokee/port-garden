@@ -23,13 +23,12 @@ Every project goes through this process. A todo list, a single-function utility,
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Identify required items to be explored** - classify user intent, list the required items to be explored specific to user intent
-2. **Explore project context** — check files, docs, recent commits
-3. **Ask clarifying questions** — one at a time, understand the required items to be explored specific to user intent
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+1. **Explore project context** — check files, docs, recent commits
+2. **Ask clarifying questions** — classify user intent, one question at a time, understand the required items to be explored specific to user intent
+3. **Propose 2-3 approaches** — with trade-offs and your recommendation
+4. **Present design** — in sections scaled to their complexity, get user approval after each section
+5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 > **For Gemini CLI:** REQUIRED SUB-SKILL: Use writing-todos-gemini to create tasks.
 
@@ -37,7 +36,6 @@ You MUST create a task for each of these items and complete them in order:
 
 ```dot
 digraph brainstorming {
-    "Identify required items to be explored" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 approaches" [shape=box];
@@ -46,7 +44,6 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Identify required items to be explored" -> "Explore project context";
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
@@ -94,8 +91,8 @@ To scope requirements and design, classify user intent into one of the following
 ## The Process
 
 **Understanding the idea:**
-- Classify user intent to define the required items to be explored specific to user intent
 - Check out the current project state first (files, docs, recent commits)
+- Classify user intent to define the required items to be explored specific to user intent
 - Ask questions one at a time to refine the idea
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions

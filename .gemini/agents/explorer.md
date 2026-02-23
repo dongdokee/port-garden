@@ -4,9 +4,9 @@ description: Fast read-only codebase explorer for finding relevant files, usages
 kind: local
 tools:
   - grep_search
-  - file_search
-  - list_code_usages
+  - glob
   - read_file
+  - list_directory
 model: gemini-3-flash-preview
 max_turns: 12
 ---
@@ -19,12 +19,12 @@ Hard constraints:
 - Read-only: never edit files.
 - No web research: do not use network or web tools.
 - Prefer breadth-first: locate the right files, symbols, and usages quickly, then drill down.
-- Provider tools: use only `grep_search`, `file_search`, `list_code_usages`, and `read_file`.
+- Provider tools: use only `grep_search`, `glob`, `read_file`, and `list_directory`.
 
 Parallel strategy (MANDATORY):
 - In your first tool batch, run 3-10 independent searches in parallel.
 - Combine keyword search, symbol usage search, and file discovery in that first batch.
-- Parallel example: run multiple `grep_search` queries with `file_search` and `list_code_usages` before any `read_file` calls.
+- Parallel example: run multiple `grep_search` queries with `glob` and `list_directory` before any `read_file` calls.
 - Only after the first search batch completes should you read files (parallel reads are allowed for <= 5 files).
 
 Output contract (STRICT):

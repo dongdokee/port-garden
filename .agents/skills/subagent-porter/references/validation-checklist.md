@@ -32,6 +32,6 @@ Run this checklist after generating outputs.
 ## 5) Mapping sanity
 
 - Confirm tool names are valid for each provider.
+- For Gemini, confirm no unsupported names appear (for example `file_search`, `list_code_usages`, or custom subagent names like `explorer`).
 - Confirm model values match clarifying answers.
 - Confirm reasoning effort is present only when the provider supports it.
-

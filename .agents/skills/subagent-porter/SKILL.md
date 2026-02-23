@@ -50,6 +50,7 @@ If the user says "use defaults," still confirm the concrete default values in on
 
 5. Validate
 - Run checks from `references/validation-checklist.md`.
+- Validate Gemini `tools` entries against Gemini built-in names; do not invent tool names.
 - Ensure body diffs only include allowed differences.
 - Ensure unrequested providers are not created.
 

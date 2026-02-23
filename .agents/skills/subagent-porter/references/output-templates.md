@@ -35,9 +35,10 @@ description: <DESCRIPTION>
 kind: local
 tools:
   - grep_search
-  - file_search
-  - list_code_usages
+  - glob
   - read_file
+  - read_many_files
+  - list_directory
 model: <MODEL>
 max_turns: 12
 ---
@@ -66,4 +67,3 @@ config_file = "agents/<AGENT_NAME>.toml"
 ```
 
 Add this block only when Codex output is requested.
-

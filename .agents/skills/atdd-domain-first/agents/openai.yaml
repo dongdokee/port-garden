@@ -1,4 +1,0 @@
-interface:
-  display_name: "ATDD Domain First"
-  short_description: "Write acceptance tests first at UseCase/domain boundary"
-  default_prompt: "Apply ATDD domain-first strategy to this task."

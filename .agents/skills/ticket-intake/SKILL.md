@@ -30,6 +30,9 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 - For Feature tickets, require User Stories and derive AC from them.
 - Never use numeric-only quality gates (for example, "at least N tests") as evidence of completion.
 - Final output must follow the template exactly; do not add extra sections unless the user asks.
+- The final document must start with `# Ticket Intake Report`.
+- In template sections with no concrete data, use a single `- N/A` bullet instead of explanatory prose.
+- In the final handoff, exclude approval history and intermediate MRI audit breakdown sections.
 - Stop at ticket output. Do not run research, planning, implementation, validation, or archive work in this skill.
 
 ## State Machine
@@ -55,12 +58,12 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 - Continue until all fields are `clear` or user confirms intentional gaps.
 
 5. `READY_FOR_FINAL_REVIEW`
-- Summarize confirmed information, unresolved gaps, and gap rationale.
+- Summarize confirmed information and unresolved gaps with risk decisions.
 - Ask for final approval before producing handoff ticket.
 
 6. `FINAL_APPROVED`
 - Emit ticket using `references/ticket-output-template.md`.
-- Keep unresolved fields visible in `Remaining Gaps` and `Gap Rationale`.
+- Keep unresolved fields visible in `Remaining Gaps and Risk Decisions`.
 - End the skill response after ticket output.
 
 ## Clarification Priority

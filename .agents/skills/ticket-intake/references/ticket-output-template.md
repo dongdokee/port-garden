@@ -1,29 +1,25 @@
 # Ticket Intake Report
 
-## Ticket Meta
-- Ticket Type:
-- Problem Statement (User-Provided):
-- Target User or Audience:
-
 ## Context
-- Why this matters:
-- Who is affected:
+- **Ticket Type**: [Ticket type]
+- **Objective:** [What's the objective? e.g., add authentication feature]
+- **Primary Users:** [Who are the primary users?]
 
 ## Current State
-- Baseline behavior today:
+- [Baseline behavior today]
 
 ## Target State
-- Expected outcome after completion:
+- [Expected outcome after completion]
 
-## Entry Point and Flow
-- Entry point:
-- Primary flow summary:
+## User Journey (if any)
+- **[User Journey Name]:** [Step-by-step description of the user journey]
 
-## User Stories (Feature-centric; use N/A if not Feature)
+## User Stories
+- [N/A if not Feature]
 - US-1: As a [user], I want [capability], so that [outcome].
 
 ## Acceptance Criteria (AC)
-- AC-1 [US-1]:
+- AC-1 (US-1): [Acceptance criteria in Gherkin syntax]
 
 ## Definition of Done (DoD)
 - [ ] In-scope stories are implemented.
@@ -32,39 +28,26 @@
 - [ ] Core invariants are validated (input validation, domain constraints, error handling).
 
 ## Non-goals
-- Explicitly out of scope:
+- [out-of-scope item; N/A if not exists]
 
 ## Constraints
-- Known constraints (platform, regulatory, calculation, performance):
+- [constraint item; N/A if not exists]
 
 ## Edge Cases
-- Known tricky scenarios or failure modes:
+- [edge case; N/A if not exists]
 
-## Artifacts and References
-- Provided artifacts (logs, traces, screenshots, sample inputs, docs):
-- Related paths or impacted modules:
+## References
+- [artifacts, reference if any; N/A if not exists]
 
-## MRI Audit
-### Clear Fields
-- [field]: [evidence]
-
-### Clarified Fields
-- [field]: [final value]
-
-### Remaining Gaps
-- [field]
-
-### Gap Rationale
+## Remaining Gaps and Risk Decisions
 - [field]
   - why_needed:
   - risk_if_missing:
   - user_approved_risk:
-
-## Risk Notes
-- Residual risks accepted by user:
+- Residual risks accepted by user: [risk if any; N/A if not exists]
 
 ## Handoff Notes for Research
-- Relevant files/modules to inspect first:
-- Known invariants or constraints to preserve:
-- Open questions to resolve:
-- Risk register for downstream planning:
+- Relevant files/modules to inspect first: [item] or `N/A`
+- Known invariants or constraints to preserve: [item] or `N/A`
+- Open questions to resolve: [item] or `N/A`
+- Risk register for downstream planning: [item] or `N/A`

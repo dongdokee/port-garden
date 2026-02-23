@@ -37,7 +37,7 @@ Use this matrix to evaluate ticket completeness after type approval.
   - textual interaction flow with success, empty, and error states
   - concrete screen list with navigation transitions
 
-## Gap Rationale Rules
+## Remaining Gaps and Risk Decisions Rules
 
 For each unresolved field, always record:
 - `why_needed`: Why this field materially affects correctness, safety, or scope.

@@ -7,11 +7,11 @@ Use this guide to prevent mixing user-facing acceptance with engineering complet
 - Define user-observable outcomes.
 - Derive from user stories.
 - Express pass/fail behavior, not implementation detail.
-- Prefer format: `AC-x [US-y]: [observable behavior]`.
+- Prefer format: `AC-x (US-y): [observable behavior]`.
 
 Examples:
-- `AC-1 [US-1]: User can view current allocation percentages for all tracked assets.`
-- `AC-2 [US-1]: System shows suggested buy/sell quantities to reach target allocation.`
+- `AC-1 (US-1): User can view current allocation percentages for all tracked assets.`
+- `AC-2 (US-1): System shows suggested buy/sell quantities to reach target allocation.`
 
 ## Definition of Done (DoD)
 

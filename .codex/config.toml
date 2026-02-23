@@ -1,0 +1,7 @@
+[agents.explorer]
+description = "Fast read-only codebase explorer for finding relevant files, usages, dependencies, and context."
+config_file = "agents/explorer.toml"
+
+[agents.oracle]
+description = "Research context and return findings to parent agent."
+config_file = "agents/oracle.toml"

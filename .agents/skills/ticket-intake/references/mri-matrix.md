@@ -25,9 +25,21 @@ Use this matrix to evaluate ticket completeness after type approval.
 - `unclear`: Information exists but is ambiguous, inconsistent, or not actionable.
 - `missing`: Required information is absent.
 
+## Feature Interpretation Rules
+
+- User Stories are required for Feature handoff and should operationalize `User goal`.
+- Acceptance Criteria must map back to User Stories.
+- DoD is separate from AC.
+- Exclusion statements (for example, fee or tax not included) belong in `Non-goals` or `Constraints`, not AC.
+- Avoid numeric-only quality gates. Use risk and behavior coverage for quality evidence.
+- `Design specs` can be marked clear only when at least one is explicit:
+  - linked design artifact (Figma or equivalent)
+  - textual interaction flow with success, empty, and error states
+  - concrete screen list with navigation transitions
+
 ## Gap Rationale Rules
 
 For each unresolved field, always record:
 - `why_needed`: Why this field materially affects correctness, safety, or scope.
 - `risk_if_missing`: What can go wrong if this field remains unresolved.
-- `user_decision`: Whether the user accepted the residual risk.
+- `user_approved_risk`: Whether the user accepted the residual risk.

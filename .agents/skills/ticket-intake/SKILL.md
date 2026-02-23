@@ -10,6 +10,7 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 
 ## Required References
 - MRI definitions: `references/mri-matrix.md`
+- AC and DoD guidance: `references/ac-dod-guidelines.md`
 - Final handoff format: `references/ticket-output-template.md`
 
 ## Operating Rules
@@ -19,9 +20,16 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 - Report MRI audit results and get approval before asking clarifying questions.
 - Ask exactly one clarifying question per turn while unresolved fields remain.
 - Prefer closed questions with 2-4 options; switch to open-ended only when required.
+- For evaluative multiple-choice questions, include one recommended option with a one-line rationale.
+- For pure preference questions, provide neutral options without recommendation.
+- If a user response conflicts with option semantics, ask one resolving question before recording the field.
 - Explain why each unclear or missing field matters before asking about it.
-- Apply soft gate progression: allow unresolved fields to remain, but require explicit final approval of gaps before handoff.
-- Include rationale for every unresolved gap in the final review.
+- Apply soft gate progression: unresolved fields may remain, but require explicit final approval of gaps before handoff.
+- Record every unresolved field with `why_needed`, `risk_if_missing`, and `user_approved_risk`.
+- Keep AC and DoD separate whenever both apply.
+- For Feature tickets, require User Stories and derive AC from them.
+- Never use numeric-only quality gates (for example, "at least N tests") as evidence of completion.
+- Final output must follow the template exactly; do not add extra sections unless the user asks.
 - Stop at ticket output. Do not run research, planning, implementation, validation, or archive work in this skill.
 
 ## State Machine
@@ -38,6 +46,7 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 - Build lists for `clear`, `unclear`, and `missing` fields.
 - For each `unclear` field, state ambiguity reason.
 - For each `missing` field, state risk introduced by omission.
+- For `Feature`, keep `Design specs` unresolved until interaction specs are explicit.
 - Ask user to approve the audit summary before clarification.
 
 4. `CLARIFYING`
@@ -57,20 +66,25 @@ Convert ambiguous user requests into approved, high-quality tickets that reduce 
 ## Clarification Priority
 When multiple fields are unresolved, ask in this order:
 1. Safety and impact-critical fields (security scope, affected users, severity, regression risk)
-2. Acceptance boundary fields (AC or DoD, expected vs actual, target goal)
-3. Scope control fields (`non-goals`)
-4. Execution support fields (artifacts, scripts, related paths)
-5. Context enrichment fields (business value, references)
+2. Feature foundation fields (User Stories, AC boundaries, expected outcome, entry point)
+3. Scope control fields (`non-goals`, constraints)
+4. Interaction and quality fields (`design specs`, `edge cases`)
+5. Execution support fields (artifacts, scripts, related paths, references)
 
 ## High-Quality Ticket Gate
 Treat a ticket as high quality only when it covers:
 - Context and affected audience
 - Current behavior or baseline
 - Expected outcome
-- Measurable acceptance criteria
-- Explicit non-goals
+- Explicit non-goals and constraints
 - Edge cases
 - Artifacts or references
+
+Additional requirements for `Feature`:
+- User Stories are explicit
+- Acceptance Criteria map to User Stories
+- Definition of Done is separate from Acceptance Criteria
+- Design specs are explicit (linked artifact or textual interaction spec)
 
 If any area remains unresolved, include it in the final handoff with rationale and explicit user-approved risk.
 

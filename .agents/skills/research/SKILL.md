@@ -55,6 +55,12 @@ check, propose one of these depths and let the user override:
 - Standard: multiple files involved, unclear implementation path, some ambiguity
 - Deep: no obvious starting point, cross-cutting concerns, external integrations, security implications
 
+**Fast-track:** When the user provides complete context upfront — ticket type,
+requirements, and approach preference — skip directly to Phase 5 (Research
+Report) after a brief confirmation. Confirm type, depth, and approach in a
+single message, then write the report. This avoids redundant questioning when
+the user already has full clarity.
+
 State your proposed depth explicitly: "This looks like a standard-depth
 investigation — I'll scan the codebase for relevant patterns and ask a few
 clarifying questions. Want me to go deeper or keep it light instead?"
@@ -63,8 +69,8 @@ clarifying questions. Want me to go deeper or keep it light instead?"
 
 ### Phase 1: Intent Check
 
-Understand what the user wants before touching the codebase. Ask 1-2 quick
-orienting questions. The goal is just enough context to explore intelligently,
+Understand what the user wants before touching the codebase. Ask 1 quick
+orienting question. The goal is just enough context to explore intelligently,
 not to fully specify requirements.
 
 Focus on:
@@ -134,6 +140,9 @@ you explored the wrong area.
 Now that you understand the codebase context, ask deeper questions — the kind
 you couldn't have asked before exploring. One question per turn, preferring
 multiple choice.
+
+If all exploration scope fields are already `clear` after Phase 2, proceed
+directly to Phase 4.
 
 **What to clarify:**
 
@@ -235,6 +244,7 @@ Output the final handoff document using the template at
 - **Spike-specific**: "Handoff Notes for Plan" section is omitted
 
 Save the report to: `docs/research/YYYY-MM-DD-<topic>.md`
+Create the `docs/research/` directory if it doesn't exist.
 
 End the skill after writing the report. Do not proceed to planning.
 
@@ -242,7 +252,7 @@ End the skill after writing the report. Do not proceed to planning.
 
 | Wrong | Right |
 |-------|-------|
-| Exploring code before understanding intent | Ask 1-2 orienting questions first |
+| Exploring code before understanding intent | Ask 1 orienting question first |
 | Asking 10 questions before exploring | Interleave: quick intent, explore, informed questions |
 | Multiple questions per message | One question at a time |
 | Inventing file paths or line numbers | Only cite paths you actually found and read |

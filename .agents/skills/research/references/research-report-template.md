@@ -21,7 +21,8 @@
 
 ## Type-Specific Details
 
-[Include the section that matches the ticket type. Omit the rest.]
+[Include ONLY the section matching the ticket type below. Delete all other
+type-specific sections entirely — do not leave them with "N/A".]
 
 ### Bug Details
 

@@ -48,6 +48,7 @@ risk decisions.
 | Existing patterns | Similar features already in the codebase that inform approach |
 | External dependencies | Libraries, APIs, services needed — triggers web-researcher |
 | Constraints | Performance, security, compatibility requirements |
+| Alternative approaches | Phase 4 requires 2-3 approaches — exploration must surface them |
 
 ### Change
 
@@ -59,6 +60,7 @@ risk decisions.
 | Affected modules | Which parts of the codebase are impacted — scopes exploration |
 | Regression risk | What existing behavior could break — informs test strategy |
 | Non-goals | What should NOT change — prevents scope creep during exploration |
+| Alternative approaches | Phase 4 requires 2-3 approaches — exploration must surface them |
 
 ### Improvement
 
@@ -70,6 +72,7 @@ risk decisions.
 | Non-goals | What behavior must NOT change — improvement shouldn't alter functionality |
 | Affected code paths | Where to focus exploration based on evidence |
 | Constraints | Budget, compatibility, or architectural limits on the approach |
+| Alternative approaches | Phase 4 requires 2-3 approaches — exploration must surface them |
 
 ### Refactoring
 
@@ -92,6 +95,7 @@ risk decisions.
 | Remediation options | Known fixes, patches, or mitigation strategies — triggers web-researcher for advisories |
 | Non-goals | Side-effects to avoid — e.g., "don't break backward compatibility for API consumers" |
 | Verification method | How to confirm the vulnerability is resolved — e.g., scan passes, exploit no longer works |
+| Alternative approaches | Phase 4 requires 2-3 approaches — exploration must surface them |
 
 ### Task
 

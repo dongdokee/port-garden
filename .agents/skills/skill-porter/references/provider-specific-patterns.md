@@ -38,7 +38,7 @@ intent-based replacement.
 | Tool name | `read_file` | "Use read_file to..." |
 | Tool name | `read_many_files` | "Use read_many_files to..." |
 | Tool name | `list_directory` | "Use list_directory to..." |
-| Tool name | `google_search` | "Use google_search to..." |
+| Tool name | `google_web_search` | "Use google_web_search to..." |
 | Tool name | `run_shell_command` | "Use run_shell_command to..." |
 | Tool name | `ask_user` | "Use ask_user to..." |
 | Agent dispatch | `run_agent` | `run_agent("code-explorer", ...)` |
@@ -48,7 +48,7 @@ intent-based replacement.
 - `glob` is a common term. Only match when used as a tool reference (backtick-
   wrapped, "Use glob to", etc.), not as a general concept ("glob pattern").
 - `grep_search`, `read_file`, `read_many_files`, `list_directory`,
-  `google_search`, `run_shell_command`, `ask_user`, `run_agent` are unambiguous.
+  `google_web_search`, `run_shell_command`, `ask_user`, `run_agent` are unambiguous.
 
 ## Codex
 

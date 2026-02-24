@@ -7,7 +7,7 @@ description: >-
   evaluation, or investigating questions that require web-based research.
 kind: local
 tools:
-  - google_search
+  - google_web_search
   - read_file
 model: gemini-3-flash-preview
 max_turns: 12

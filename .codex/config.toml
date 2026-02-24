@@ -1,11 +1,3 @@
-[agents.explorer]
-description = "Fast read-only codebase explorer for finding relevant files, usages, dependencies, and context."
-config_file = "agents/explorer.toml"
-
-[agents.oracle]
-description = "Research context and return findings to parent agent."
-config_file = "agents/oracle.toml"
-
 [agents.code-explorer]
 description = "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, understanding patterns and abstractions, and documenting dependencies to inform new development"
 config_file = "agents/code-explorer.toml"

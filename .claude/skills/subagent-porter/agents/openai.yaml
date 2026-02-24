@@ -1,4 +1,0 @@
-interface:
-  display_name: "Subagent Porter"
-  short_description: "Port agent files across Claude, Gemini, and Codex."
-  default_prompt: "Use $subagent-porter to convert this agent definition for requested providers after confirming provider, model, and reasoning effort."

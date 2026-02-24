@@ -64,8 +64,8 @@ clarifying questions. Want me to go deeper or keep it light instead?"
 ### Phase 1: Intent Check
 
 Understand what the user wants before touching the codebase. Ask 1-2 quick
-orienting questions using AskUserQuestion. The goal is just enough context to
-explore intelligently, not to fully specify requirements.
+orienting questions. The goal is just enough context to explore intelligently,
+not to fully specify requirements.
 
 Focus on:
 - **What**: What are they trying to accomplish?
@@ -91,15 +91,14 @@ subagents for broad sweeps, then read key files inline for deep understanding.
 
 **Codebase exploration:**
 
-Dispatch the `code-explorer` custom agent to find relevant files, patterns, and
+Dispatch the `code-explorer` agent to find relevant files, patterns, and
 architecture:
 
 ```
-Task tool:
-  subagent_type: "code-explorer"
-  prompt: "Find files and patterns related to [topic]. Goal: [user's purpose].
-           Return: key files with file:line refs, architecture patterns,
-           existing conventions, dependencies, and suggested reading order."
+Dispatch the `code-explorer` agent:
+  "Find files and patterns related to [topic]. Goal: [user's purpose].
+   Return: key files with file:line refs, architecture patterns,
+   existing conventions, dependencies, and suggested reading order."
 ```
 
 For deep-depth research, dispatch 2-3 code-explorer agents targeting different
@@ -112,13 +111,12 @@ understand it well enough to propose approaches.
 **External research (when needed):**
 
 If the task involves external libraries, APIs, or unfamiliar technology, dispatch
-the `web-researcher` custom agent in parallel with codebase exploration:
+the `web-researcher` agent in parallel with codebase exploration:
 
 ```
-Task tool:
-  subagent_type: "web-researcher"
-  prompt: "Research [specific question about external topic]. Return: key
-           findings with source URLs, confidence assessment, and knowledge gaps."
+Dispatch the `web-researcher` agent:
+  "Research [specific question about external topic]. Return: key
+   findings with source URLs, confidence assessment, and knowledge gaps."
 ```
 
 Use web research for:
@@ -134,8 +132,8 @@ you explored the wrong area.
 ### Phase 3: Informed Clarification
 
 Now that you understand the codebase context, ask deeper questions — the kind
-you couldn't have asked before exploring. Use AskUserQuestion, one question per
-turn, preferring multiple choice.
+you couldn't have asked before exploring. One question per turn, preferring
+multiple choice.
 
 **What to clarify:**
 
@@ -203,7 +201,7 @@ I recommend Approach 1 because [specific reasoning linking to codebase
 patterns and user requirements].
 ```
 
-Use AskUserQuestion to get user's choice. If the user selects a non-recommended
+Ask the user to choose. If the user selects a non-recommended
 approach, confirm understanding of the trade-offs before proceeding.
 
 For rejected approaches, document:
@@ -246,7 +244,7 @@ End the skill after writing the report. Do not proceed to planning.
 |-------|-------|
 | Exploring code before understanding intent | Ask 1-2 orienting questions first |
 | Asking 10 questions before exploring | Interleave: quick intent, explore, informed questions |
-| Multiple questions per message | One question at a time via AskUserQuestion |
+| Multiple questions per message | One question at a time |
 | Inventing file paths or line numbers | Only cite paths you actually found and read |
 | "Consider refactoring X" (vague) | "X at file.ts:42 uses pattern Y, which conflicts with Z" (specific) |
 | Proposing one approach | Always present 2-3 with trade-offs |
@@ -257,7 +255,7 @@ End the skill after writing the report. Do not proceed to planning.
 ## Key Principles
 
 - **Interleave questions and exploration** — don't fully separate them
-- **One question at a time** — use AskUserQuestion, don't dump a list
+- **One question at a time** — don't dump a list
 - **Multiple choice preferred** — easier to answer, faster to converge
 - **Evidence-based claims** — every file reference must be real (file:line)
 - **YAGNI ruthlessly** — cut scope during clarification, not after implementation

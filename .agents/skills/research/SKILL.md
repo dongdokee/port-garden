@@ -55,12 +55,6 @@ check, propose one of these depths and let the user override:
 - Standard: multiple files involved, unclear implementation path, some ambiguity
 - Deep: no obvious starting point, cross-cutting concerns, external integrations, security implications
 
-**Fast-track:** When the user provides complete context upfront — ticket type,
-requirements, and approach preference — skip directly to Phase 5 (Research
-Report) after a brief confirmation. Confirm type, depth, and approach in a
-single message, then write the report. This avoids redundant questioning when
-the user already has full clarity.
-
 State your proposed depth explicitly: "This looks like a standard-depth
 investigation — I'll scan the codebase for relevant patterns and ask a few
 clarifying questions. Want me to go deeper or keep it light instead?"
@@ -86,9 +80,6 @@ After the user responds:
 2. Load the type-specific exploration scope from `references/exploration-scope.md`.
 3. Propose a research depth.
 4. Confirm type and depth with the user before proceeding.
-
-If the user's initial request is already detailed and clear, skip straight to
-proposing type + depth — don't ask questions you already know the answers to.
 
 ### Phase 2: Exploration
 
@@ -141,8 +132,9 @@ Now that you understand the codebase context, ask deeper questions — the kind
 you couldn't have asked before exploring. One question per turn, preferring
 multiple choice.
 
-If all exploration scope fields are already `clear` after Phase 2, proceed
-directly to Phase 4.
+Even if all exploration scope fields appear `clear` after Phase 2, present your
+assessment to the user and get explicit confirmation before proceeding to
+Phase 4.
 
 **What to clarify:**
 

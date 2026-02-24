@@ -81,6 +81,8 @@ After the user responds:
 3. Propose a research depth.
 4. Confirm type and depth with the user before proceeding.
 
+**Exit → Phase 2**: User has confirmed work type and depth.
+
 ### Phase 2: Exploration
 
 Investigate the codebase and external context using a hybrid approach: dispatch
@@ -93,13 +95,41 @@ architecture:
 
 ```
 Dispatch the `code-explorer` agent:
+
   "Find files and patterns related to [topic]. Goal: [user's purpose].
-   Return: key files with file:line refs, architecture patterns,
-   existing conventions, dependencies, and suggested reading order."
+
+   Scope:
+   - Light: entry point and immediate neighbors only
+   - Standard: 2-3 levels out from entry points
+   - Deep: full codebase sweep
+
+   Success criterion: I should be able to proceed to Phase 3 without
+   asking you follow-up questions about the codebase.
+
+   Return format (all 5 sections required):
+   1. Architecture overview — 2-3 sentences on how [topic] fits into the codebase
+   2. Key files table:
+      | File | Lines | Relevance |
+      (cap: 10-15 files max; prioritize by relevance, not discovery order)
+   3. Existing conventions — naming, patterns, idioms already in use
+   4. Dependencies — internal modules and external packages involved
+   5. Suggested reading order — numbered sequence for understanding the area
+
+   If you find nothing relevant:
+   - List what you searched for (terms, patterns, directories)
+   - Explain why results are empty (missing feature? different naming? wrong area?)
+   - Suggest alternative search angles or related areas to try"
 ```
 
 For deep-depth research, dispatch 2-3 code-explorer agents targeting different
-aspects (similar features, architecture, test patterns) in parallel.
+aspects in parallel. Split by **concern**, not by file path — each agent gets a
+distinct exploration goal with no overlap.
+
+The right split depends on the research topic; decide it per-task. Common
+patterns (examples only, not a fixed list):
+- *Data flow vs. integration points vs. error handling* — for understanding a feature end-to-end
+- *Current implementation vs. similar prior art vs. test coverage* — for refactoring or improvement work
+- *Core logic vs. configuration/deployment vs. external API surface* — for cross-cutting concerns
 
 After subagent results return, read the most important files yourself. Subagent
 summaries are useful for orientation, but you need to read the actual code to
@@ -112,8 +142,31 @@ the `web-researcher` agent in parallel with codebase exploration:
 
 ```
 Dispatch the `web-researcher` agent:
-  "Research [specific question about external topic]. Return: key
-   findings with source URLs, confidence assessment, and knowledge gaps."
+
+  "Research [specific question about external topic].
+
+   Search scope: [library docs / API reference / security advisories /
+   technology comparison — pick the most relevant]
+
+   Cap: 5-8 sources max. Prefer authoritative sources (official docs,
+   RFCs, peer-reviewed) over blog posts or forums.
+
+   Source evaluation — for each source, briefly assess:
+   - Authority: official docs > known expert > community post
+   - Currency: publication date, still applicable?
+   - Consensus: do independent sources agree?
+
+   Return format (all 4 sections required):
+   1. Key findings — bulleted, with source URL inline per finding
+   2. Confidence — high / medium / low for each finding, with reasoning
+   3. Knowledge gaps — what you couldn't find or verify
+   4. Contradictions — where sources disagree and your assessment of which
+      is more credible
+
+   If search yields insufficient results:
+   - List the search queries you tried
+   - Explain why results are thin (niche topic? too new? behind paywall?)
+   - Suggest rephrased questions or alternative angles to try"
 ```
 
 Use web research for:
@@ -122,9 +175,24 @@ Use web research for:
 - Security implications or known issues
 - Comparing technology options
 
+**Handling weak or empty results:**
+
+If a subagent returns thin, off-target, or empty results:
+
+1. **Diagnose** — was the prompt too narrow (over-specific terms), too broad
+   (vague goal), or pointed in the wrong direction (wrong area of codebase)?
+2. **Retry once** — adjust the prompt based on the diagnosis and re-dispatch.
+   One retry only; two rounds of exploration then stop.
+3. **If retry also fails** — document the gap: what was searched, why it came
+   up empty, and what this means for the research. Present the gap to the user
+   in the Phase 2 findings summary so they can redirect if needed.
+
 **Present findings incrementally.** Share a brief summary of what you found
 before moving to clarification. This gives the user a chance to redirect if
 you explored the wrong area.
+
+**Exit → Phase 3**: Exploration produced results (or gaps are documented after
+retry), and the user has not redirected to a different area.
 
 ### Phase 3: Informed Clarification
 
@@ -170,6 +238,9 @@ Continue until all critical gaps are resolved or the user explicitly approves
 remaining gaps. For each approved gap, record why it matters and the risk of
 leaving it unresolved.
 
+**Exit → Phase 4**: All exploration scope fields are `clear` or have
+user-approved gaps with documented risk.
+
 ### Phase 4: Approach Selection
 
 Present 2-3 approaches with trade-offs, informed by codebase findings and
@@ -209,6 +280,9 @@ For rejected approaches, document:
 - Why it was considered (what made it seem viable)
 - Why it was rejected (specific evidence)
 - Conditions under which to revisit it
+
+**Exit → Phase 5**: User has selected an approach; rejected approaches are
+documented with reasoning.
 
 ### Phase 5: Research Report
 

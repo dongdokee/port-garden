@@ -1,0 +1,146 @@
+---
+name: research
+description: Use when scoping a bug, feature, or change — investigating unfamiliar code, evaluating approaches, or assessing impact before planning.
+---
+
+# Research
+
+Research topic: **the user's research topic, provided as the skill argument**
+
+If no topic was provided, ask the user what to research.
+
+## Hard Gate
+
+No implementation code or production changes. The research ticket is the only deliverable. If the user wants to skip steps, ask which to abbreviate and record skipped areas as gaps.
+
+**Convention:** At each step, present findings and proceed. If the user objects, correct and continue.
+
+## Process
+
+```dot
+digraph research {
+    Start [shape=doublecircle];
+    "Classify Intent" [shape=box];
+    "Explore Codebase" [shape=box];
+    "Depth?" [shape=diamond];
+    "Expand Exploration" [shape=box];
+    "Classify Fields" [shape=box];
+    "Required clear?" [shape=diamond];
+    "Resolve Blockers\n(max 2 attempts)" [shape=box];
+    "Select Approach" [shape=box];
+    "Pre-write Gate" [shape=diamond];
+    "Write Ticket" [shape=box];
+    Done [shape=doublecircle];
+
+    Start -> "Classify Intent";
+    "Classify Intent" -> "Explore Codebase";
+    "Explore Codebase" -> "Depth?";
+    "Depth?" -> "Pre-write Gate" [label="Light"];
+    "Depth?" -> "Classify Fields" [label="Standard"];
+    "Depth?" -> "Expand Exploration" [label="Deep"];
+    "Expand Exploration" -> "Classify Fields";
+    "Classify Fields" -> "Required clear?";
+    "Required clear?" -> "Select Approach" [label="yes"];
+    "Required clear?" -> "Resolve Blockers\n(max 2 attempts)" [label="no"];
+    "Resolve Blockers\n(max 2 attempts)" -> "Required clear?";
+    "Select Approach" -> "Pre-write Gate";
+    "Pre-write Gate" -> "Write Ticket" [label="pass"];
+    "Pre-write Gate" -> "Classify Fields" [label="fail"];
+    "Write Ticket" -> Done;
+}
+```
+
+## Classify Intent
+
+Infer **What**, **Why**, and **Type**:
+
+| If... | Type |
+|-------|------|
+| Broken behavior deviating from expected | Bug |
+| New capability or modifying existing behavior | Feature |
+| Non-functional quality or structural refactoring | Improvement |
+| Vulnerability, hardening, or compliance | Security |
+| Bounded operation (migration, docs, testing, setup) | Task |
+| Visual design, UX flow, or UI component work | Design-UI |
+
+Ambiguous? Ask one question. Tie-breaker: prefer the type closest to the user's stated intent.
+
+**Exit:** Type established.
+
+## Explore Codebase
+
+Starting from the topic, search for relevant files, callers, and imports. Research external libs/APIs in parallel if relevant.
+
+Thin results (< 2 relevant files or central question unanswered): retry once broader. Still thin — document gap, proceed.
+
+**Exit:** Results obtained or gaps documented.
+
+## Choose Depth
+
+| Depth | When | Next step |
+|-------|------|-----------|
+| **Light** | Fix obvious, 1-2 files, no ambiguity | Pre-write Gate |
+| **Standard** | Multiple files, some unknowns, bounded scope | Classify Fields |
+| **Deep** | Architectural, greenfield, cross-cutting, or security | Expand Exploration |
+
+Present chosen depth with reasoning. User may override.
+
+**Exit:** Depth confirmed.
+
+## Expand Exploration (Deep only)
+
+Explore 2-3 additional concerns in parallel using concurrent tool calls. Cap 3 rounds.
+
+**Exit:** Sufficient evidence for field classification.
+
+## Classify Fields (Standard/Deep)
+
+Read `references/types/{type}.md`. Classify each field — start every field at `missing`; promote only with evidence.
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| `clear` | Specific, actionable — one interpretation | Ready |
+| `unclear` | Ambiguous or contradictory | R: blocks. O: gap + risk |
+| `missing` | No information found | R: blocks. O: gap + risk |
+
+All types share one common Optional field: **Non-goals** (scope boundaries).
+
+**Deep only:** verify `clear` evidence is specific enough for the chosen depth.
+
+### Resolve Required Blockers
+
+Try codebase exploration first, then ask the user. Batch related questions. After 2 attempts on the same blocker, offer risk override. Record unresolved fields: why needed, risk if missing, user-approved risk.
+
+### Resolve Optional Gaps
+
+Document gap + risk. Do not block.
+
+**Exit:** All Required fields `clear` or gaps user-approved.
+
+## Select Approach (Standard/Deep)
+
+Present 2-3 approaches with trade-offs and file:line refs. Include relevant external research with source URLs and why rejected approaches were dismissed.
+
+After selection, build DoD from type template + ticket-specific criteria; present for approval.
+
+**Exit:** Approach selected, DoD approved.
+
+## Pre-write Gate
+
+**Light — ALL true:**
+1. Problem and fix clearly identified
+2. Scope boundaries explicit
+
+**Standard/Deep — ALL true:**
+1. DoR passes (Required `clear`, Optional `clear` or gap-approved)
+2. DoD approved
+3. Approach confirmed
+4. Scope boundaries explicit
+
+Fails → return to Classify Fields (Standard/Deep) or Explore Codebase (Light).
+
+## Write Ticket
+
+Output using `references/research-ticket-template.md`. Must start with `# Research Ticket`. Light: omit N/A sections.
+
+Save to: `docs/research/YYYY-MM-DD-<topic>.md`. End skill after writing.

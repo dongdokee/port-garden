@@ -1,5 +1,8 @@
 # Research Ticket
 
+<!-- Light depth: sections marked [Light: omit if N/A] may be replaced with
+"[Omitted — Light depth, N/A]" when genuinely not applicable. -->
+
 ## Context
 - **Work Type**: [type]
 - **Spike Method** (if Spike): [method]
@@ -56,7 +59,7 @@ elsewhere.]
 
 [Limitations discovered during exploration]
 
-## External Research
+## External Research [Light: omit if N/A]
 
 [Findings from web research, if conducted. Include source URLs.
 N/A if no external research was needed.]
@@ -75,7 +78,7 @@ N/A if no external research was needed.]
 
 [file:line references and external sources supporting this choice]
 
-## Rejected Approaches
+## Rejected Approaches [Light: omit if N/A]
 
 ### [Approach Name]
 
@@ -87,7 +90,7 @@ N/A if no external research was needed.]
 
 **Do not revisit unless:** [Specific condition that would change this decision]
 
-## Anti-Patterns
+## Anti-Patterns [Light: omit if N/A]
 
 - Do not [pattern] — [reasoning, e.g., "breaks existing convention at file.ts:42"]
 

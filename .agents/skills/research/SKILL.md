@@ -11,40 +11,42 @@ If no topic was provided, ask the user what to research.
 
 ## Hard Gate
 
-No planning, implementation, or production code changes. Only output: the research ticket. If the user rejects the process, explain the research ticket is the deliverable, ask which steps to abbreviate, and record skipped areas as gaps.
+No implementation code or production changes. The research ticket is the only deliverable. If the user wants to skip steps, ask which to abbreviate and record skipped areas as gaps.
+
+**Convention:** At each step, present findings and proceed. If the user objects, correct and continue.
 
 ## Process
 
 ```dot
 digraph research {
     Start [shape=doublecircle];
-    "Classify intent" [shape=box];
-    "Explore codebase" [shape=box];
+    "Classify Intent" [shape=box];
+    "Explore Codebase" [shape=box];
     "Depth?" [shape=diamond];
-    "Expand exploration" [shape=box];
-    "Read type file\n+ classify fields" [shape=box];
+    "Expand Exploration" [shape=box];
+    "Classify Fields" [shape=box];
     "Required clear?" [shape=diamond];
-    "Resolve blockers" [shape=box];
-    "Select approach" [shape=box];
-    "Pre-write gate?" [shape=diamond];
-    "Write ticket" [shape=box];
+    "Resolve Blockers\n(max 2 attempts)" [shape=box];
+    "Select Approach" [shape=box];
+    "Pre-write Gate" [shape=diamond];
+    "Write Ticket" [shape=box];
     Done [shape=doublecircle];
 
-    Start -> "Classify intent";
-    "Classify intent" -> "Explore codebase";
-    "Explore codebase" -> "Depth?";
-    "Depth?" -> "Write ticket" [label="Light"];
-    "Depth?" -> "Read type file\n+ classify fields" [label="Standard"];
-    "Depth?" -> "Expand exploration" [label="Deep"];
-    "Expand exploration" -> "Read type file\n+ classify fields";
-    "Read type file\n+ classify fields" -> "Required clear?";
-    "Required clear?" -> "Select approach" [label="yes"];
-    "Required clear?" -> "Resolve blockers" [label="no"];
-    "Resolve blockers" -> "Required clear?";
-    "Select approach" -> "Pre-write gate?";
-    "Pre-write gate?" -> "Write ticket" [label="yes"];
-    "Pre-write gate?" -> "Read type file\n+ classify fields" [label="no"];
-    "Write ticket" -> Done;
+    Start -> "Classify Intent";
+    "Classify Intent" -> "Explore Codebase";
+    "Explore Codebase" -> "Depth?";
+    "Depth?" -> "Pre-write Gate" [label="Light"];
+    "Depth?" -> "Classify Fields" [label="Standard"];
+    "Depth?" -> "Expand Exploration" [label="Deep"];
+    "Expand Exploration" -> "Classify Fields";
+    "Classify Fields" -> "Required clear?";
+    "Required clear?" -> "Select Approach" [label="yes"];
+    "Required clear?" -> "Resolve Blockers\n(max 2 attempts)" [label="no"];
+    "Resolve Blockers\n(max 2 attempts)" -> "Required clear?";
+    "Select Approach" -> "Pre-write Gate";
+    "Pre-write Gate" -> "Write Ticket" [label="pass"];
+    "Pre-write Gate" -> "Classify Fields" [label="fail"];
+    "Write Ticket" -> Done;
 }
 ```
 
@@ -61,41 +63,39 @@ Infer **What**, **Why**, and **Type**:
 | Bounded operation (migration, docs, testing, setup) | Task |
 | Visual design, UX flow, or UI component work | Design-UI |
 
-Tie-breaker: prefer the type whose Required fields best match the user's stated intent. Clear = all three have one reasonable interpretation. Ambiguous = ask one question.
-
-Present classification and proceed. If the user objects, correct and continue.
+Ambiguous? Ask one question. Tie-breaker: prefer the type closest to the user's stated intent.
 
 **Exit:** Type established.
 
 ## Explore Codebase
 
-Starting from the topic, search for relevant files, callers, and imports. Research external libs/APIs in parallel (use concurrent tool calls) if relevant. Present brief summary so user can redirect.
+Starting from the topic, search for relevant files, callers, and imports. Research external libs/APIs in parallel if relevant.
 
-Thin results (< 2 relevant files or the topic's central question unanswered): retry once broader. Still thin — document gap, proceed.
+Thin results (< 2 relevant files or central question unanswered): retry once broader. Still thin — document gap, proceed.
 
 **Exit:** Results obtained or gaps documented.
 
 ## Choose Depth
 
-| Depth | Select when |
-|-------|------------|
-| **Light** | Fix obvious, 1-2 files, no ambiguity |
-| **Standard** | Multiple files, some unknowns, bounded |
-| **Deep** | Architectural, greenfield, cross-cutting, security |
+| Depth | When | Next step |
+|-------|------|-----------|
+| **Light** | Fix obvious, 1-2 files, no ambiguity | Pre-write Gate |
+| **Standard** | Multiple files, some unknowns, bounded scope | Classify Fields |
+| **Deep** | Architectural, greenfield, cross-cutting, or security | Expand Exploration |
 
 Present chosen depth with reasoning. User may override.
 
-After depth is confirmed, read `references/types/{type}.md`.
-
-Deep only: expand exploration (2-3 concerns in parallel using concurrent tool calls, cap 3 rounds) before classifying fields.
-
 **Exit:** Depth confirmed.
 
-## Classify Fields
+## Expand Exploration (Deep only)
 
-Classify each field from the type file. Start every field at `missing`; promote only with evidence.
+Explore 2-3 additional concerns in parallel using concurrent tool calls. Cap 3 rounds.
 
-### Status Table
+**Exit:** Sufficient evidence for field classification.
+
+## Classify Fields (Standard/Deep)
+
+Read `references/types/{type}.md`. Classify each field — start every field at `missing`; promote only with evidence.
 
 | Status | Meaning | Action |
 |--------|---------|--------|
@@ -103,60 +103,44 @@ Classify each field from the type file. Start every field at `missing`; promote 
 | `unclear` | Ambiguous or contradictory | R: blocks. O: gap + risk |
 | `missing` | No information found | R: blocks. O: gap + risk |
 
-All types share one common Optional field: **Non-goals** (scope boundaries preventing over-exploration).
+All types share one common Optional field: **Non-goals** (scope boundaries).
+
+**Deep only:** verify `clear` evidence is specific enough for the chosen depth.
 
 ### Resolve Required Blockers
 
-Ask Required `unclear`/`missing` fields first. Batch related questions. After 2 attempts on the same blocker, ask for risk override. For unresolved fields record: why needed, risk if missing, user-approved risk.
+Try codebase exploration first, then ask the user. Batch related questions. After 2 attempts on the same blocker, offer risk override. Record unresolved fields: why needed, risk if missing, user-approved risk.
 
 ### Resolve Optional Gaps
 
-Document gap + risk for Optional `unclear`/`missing` fields. Do not block on Optional fields.
+Document gap + risk. Do not block.
 
-### Deep: Verify Evidence
+**Exit:** All Required fields `clear` or gaps user-approved.
 
-For Deep depth only: confirm `clear` evidence is specific enough for the chosen depth.
+## Select Approach (Standard/Deep)
 
-**Exit:** All fields `clear` or gaps user-approved.
-
-## Select Approach
-
-Present 2-3 approaches with trade-offs and file:line refs. Include:
-
-- Relevant external research with source URLs (feeds External Research)
-- Why other approaches were considered but not recommended (feeds Rejected Approaches)
+Present 2-3 approaches with trade-offs and file:line refs. Include relevant external research with source URLs and why rejected approaches were dismissed.
 
 After selection, build DoD from type template + ticket-specific criteria; present for approval.
 
 **Exit:** Approach selected, DoD approved.
 
-## Write Ticket
+## Pre-write Gate
 
-Output using `references/research-ticket-template.md`. Must start with `# Research Ticket`. Light: omit N/A sections.
+**Light — ALL true:**
+1. Problem and fix clearly identified
+2. Scope boundaries explicit
 
-**Pre-write gate — ALL true:**
+**Standard/Deep — ALL true:**
 1. DoR passes (Required `clear`, Optional `clear` or gap-approved)
-2. DoD approved (Standard/Deep) or stated inline (Light)
+2. DoD approved
 3. Approach confirmed
 4. Scope boundaries explicit
 
-Gate fails — return to the step indicated by the flowchart.
+Fails → return to Classify Fields (Standard/Deep) or Explore Codebase (Light).
 
-**Producing each section:**
+## Write Ticket
 
-- **Context** — from Classify Intent (type) and Choose Depth (depth, objective)
-- **Problem Statement** — from Classify Intent (what/why)
-- **Definition of Ready** — from Classify Fields (field statuses and evidence)
-- **Definition of Done** — from Select Approach (type template + ticket-specific criteria)
-- **Codebase Findings** — from Explore Codebase (files, patterns, dependencies)
-- **External Research** — from Explore Codebase and Select Approach (web findings with source URLs)
-- **Chosen Approach** — from Select Approach (what, why, file:line refs)
-- **Rejected Approaches** — from Select Approach (what, why considered, why rejected, revisit-if)
-- **Anti-Patterns** — from Explore Codebase (do-not / reasoning pairs discovered during exploration)
-- **Scope Boundaries** — from Classify Fields Non-goals field (in scope / out of scope)
-- **Open Questions** — from Classify Fields (unresolved questions, suggested defaults)
-- **Handoff Notes** — synthesized from all findings (starting point, patterns, risks, complexity)
-
-**Self-check:** verify the ticket contains: problem statement, testable requirements, file:line evidence, rationale.
+Output using `references/research-ticket-template.md`. Must start with `# Research Ticket`. Light: omit N/A sections.
 
 Save to: `docs/research/YYYY-MM-DD-<topic>.md`. End skill after writing.

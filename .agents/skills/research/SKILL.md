@@ -1,6 +1,6 @@
 ---
 name: research
-description: Use when the user needs to investigate or understand a topic before planning or implementation.
+description: Use when scoping a bug, feature, or change — investigating unfamiliar code, evaluating approaches, or assessing impact before planning.
 ---
 
 # Research
@@ -11,92 +11,81 @@ If no topic was provided, ask the user what to research.
 
 ## Hard Gate
 
-No planning, implementation, or production code changes. Only output: the
-research ticket.
+No planning, implementation, or production code changes. Only output: the research ticket.
 
-## Depth Levels
+### Step 1: Intent Check
 
-| Depth | When | Scoping | What happens |
-|-------|------|---------|--------------|
-| **Light** | Clear bug, small config, typo | Entry point + direct imports/callers | Quick scan, short ticket |
-| **Standard** | Most features, improvements | 2–3 import/call depth | Full codebase + optional web research |
-| **Deep** | Greenfield, architectural, security | 2–3 parallel explorations by concern; cap 3 rounds | Multiple explorations, web research |
+Infer **What**, **Why**, and **Type**:
 
-## Process
+| If... | Type |
+|-------|------|
+| Broken behavior deviating from expected | Bug |
+| New capability or modifying existing behavior | Feature |
+| Non-functional quality or structural refactoring | Improvement |
+| Vulnerability, hardening, or compliance | Security |
+| Bounded operation (migration, docs, testing, setup) | Task |
+| Visual design, UX flow, or UI component work | Design-UI |
 
-Every phase entered in order; phases may complete immediately if conditions met.
+Tie-breaker: prefer the type with fewer Required fields. Clear = all three have one reasonable interpretation. Ambiguous = ask one question.
+When clear, present classification for confirmation. On confirmation, read `references/types/{type}.md`. Do NOT select depth yet.
 
-```
-1 → 2 → 3 → 4 → 5 → Done
-         ↑ Light: all R clear → skip to 4
-         Gate fails → return to appropriate phase
-```
+**Exit:** User confirmed type.
 
-### Phase 1: Intent Check
+### Step 2: Initial Exploration
 
-Infer **What**, **Why**, and **Type**: Bug, Feature, Improvement, Security,
-Task, Design-UI.
+Explore from the entry point + direct callers/imports. Research external libs/APIs in parallel if relevant. Present brief summary so user can redirect.
+Thin results (< 2 relevant files or core question unanswered): retry once broader. Still thin — document gap, proceed.
 
-Clear = all three inferred with one reasonable interpretation. Ambiguous = any
-has multiple readings → ask one question.
+**Exit:** Results obtained or gaps documented.
 
-If clear, present classification + proposed depth for confirmation. On
-confirmation, read `references/types/{type}.md`.
+### Step 3: Depth Decision
 
-**Exit → Phase 2**: User confirmed type and depth.
+| Depth | Select when | Next |
+|-------|------------|------|
+| **Light** | Fix obvious, 1-2 files, no ambiguity | Skip to Step 6 |
+| **Standard** | Multiple files, some unknowns, bounded | Step 4 |
+| **Deep** | Architectural, greenfield, cross-cutting, security | Expand exploration (2-3 parallel by concern, cap 3 rounds), then Step 4 |
 
-### Phase 2: Exploration
+Present chosen depth with reasoning. User may override.
 
-Explore the codebase scoped to depth level (see Scoping column). Research
-external libs/APIs in parallel.
+**Exit:** Depth confirmed.
 
-Present brief summary so user can redirect. Thin results (< 2 relevant files or
-no question answered) → retry once. Still thin → document gap, proceed.
+### Step 4: Clarification (Standard/Deep only)
 
-**Exit → Phase 3**: Results obtained or gaps documented.
+Classify each field from the type file. Start every field at `missing`; promote only with evidence:
 
-### Phase 3: Informed Clarification
+| Status | Meaning | Action |
+|--------|---------|--------|
+| `clear` | Specific, actionable — one interpretation | Ready |
+| `unclear` | Ambiguous or contradictory | R: blocks. O: gap + risk |
+| `missing` | No information found | R: blocks. O: gap + risk |
 
-Classify each field per `references/exploration-scope.md`. Ask Required fields
-first, then Optional.
+All types share one common Optional field: **Non-goals** (scope boundaries preventing over-exploration).
+Ask Required `unclear`/`missing` first, then Optional. Batch related questions. After 2 attempts on same blocker, ask for risk override. For unresolved fields record: why needed, risk if missing, user-approved risk. Deep: confirm `clear` evidence is sufficient.
 
-- **Light**: All Required `clear` from Phases 1+2 → skip to Phase 4.
-- **Standard**: Only ask `unclear`/`missing` fields.
-- **Deep**: Confirm `clear` evidence sufficient. Ask all `unclear`/`missing`.
+**Exit:** All fields `clear` or gaps user-approved.
 
-Batch related questions. After 2 returns on same blocker, ask for override.
+### Step 5: Approach Selection (Standard/Deep only)
 
-**Exit → Phase 4**: All fields `clear` or user-approved gaps.
+Present 2-3 approaches with trade-offs and file:line refs. After selection, build DoD from type template + ticket-specific criteria; present for approval.
 
-### Phase 4: Approach Selection
+**Exit:** Approach selected, DoD approved.
 
-Light: state recommended approach, ask for confirmation. Standard/Deep: present
-2–3 approaches with trade-offs and file:line refs.
+### Step 6: Write Ticket
 
-After selection: build DoD from type template + ticket-specific criteria; present
-for approval.
-
-**Exit → Phase 5**: Approach selected, DoD approved.
-
-### Phase 5: Research Ticket
-
-Output using `references/research-ticket-template.md`. Must start with
-`# Research Ticket`. Light: skip External Research, Rejected Approaches,
-Anti-Patterns if N/A.
+Output using `references/research-ticket-template.md`. Must start with `# Research Ticket`. Light: omit N/A sections.
 
 **Pre-write gate — ALL true:**
 1. DoR passes (Required `clear`, Optional `clear` or gap-approved)
-2. DoD approved
+2. DoD approved (Standard/Deep) or stated inline (Light)
 3. Approach confirmed
 4. Scope boundaries explicit
 
-Gate fails → return to appropriate phase. Quality self-check (not shown to
-user): problem statement, testable requirements, file:line evidence, rationale.
-
+Gate fails — return to appropriate step. Self-check: problem statement, testable requirements, file:line evidence, rationale.
 Save to: `docs/research/YYYY-MM-DD-<topic>.md`. End skill after writing.
+
+**Examples:** Light — crash on button click, null-ref found in one file, skip to ticket. Standard — add CSV export, data layer + two UI points, clarify format, present approaches. Deep — replace auth system, multiple subsystems + security, parallel explorations, full classification.
 
 ## Error Recovery
 
-If the user rejects the phased process, explain that the research ticket is the
-deliverable, ask which phases to abbreviate. Record skipped areas as gaps in the
-ticket.
+If user rejects the process, explain the research ticket is the deliverable, ask which steps to abbreviate. Record skipped areas as gaps.

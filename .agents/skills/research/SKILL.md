@@ -1,12 +1,10 @@
 ---
 name: research
 description: >-
-  First step in the agentic coding workflow (Research > Plan > Implement >
-  Validate > Archive). Converts raw user requests into researched, scoped
-  handoff reports. Use whenever the user starts new work — features, bug fixes,
-  refactors, improvements, or any task that needs understanding before planning.
-  Also use when the user says "research", "investigate", "explore", "look into",
-  or invokes /research.
+  Use whenever the user starts new work — features, bug fixes, refactors,
+  improvements, spikes, or any task that needs understanding before planning.
+  Also use when the user says "research", "investigate", "explore", "look
+  into", or invokes /research.
 ---
 
 # Research
@@ -15,29 +13,31 @@ Research topic: **$ARGUMENTS**
 
 ## Overview
 
-Convert a raw user request into a Research Report that the Plan step can act on
-immediately. This means understanding what the user wants, exploring the
+Convert a raw user request into a Research Ticket that the Plan step can act on
+immediately. The ticket includes a Definition of Ready (DoR) proving all
+required fields are resolved, and a Definition of Done (DoD) defining verifiable
+completion criteria. This means understanding what the user wants, exploring the
 codebase and external context, clarifying gaps, selecting an approach with user
 approval, and documenting everything — including dead ends — so downstream steps
 don't repeat the investigation.
 
-The skill interleaves questioning and exploration rather than doing all questions
-first or all exploration first. A senior engineer doesn't interrogate for 20
-minutes before glancing at the code; they ask a couple of orienting questions,
-look around, then ask smarter questions informed by what they found.
+The skill follows an explore-then-clarify pattern: ask one orienting question,
+explore the codebase, then ask informed questions that you couldn't have asked
+before seeing the code. This avoids blind interrogation and ensures questions
+are grounded in what the codebase actually looks like.
 
 ## Required References
 
-- Exploration scope per ticket type: `references/exploration-scope.md`
-- Final report format: `references/research-report-template.md`
+- Exploration scope, DoR fields, and DoD templates per ticket type: `references/exploration-scope.md`
+- Final ticket format: `references/research-ticket-template.md`
 
 ## Hard Gate
 
 Do NOT proceed to planning, implementation, or any code changes. The skill's
-terminal output is a Research Report document. Stop there.
+terminal output is a Research Ticket document. Stop there.
 
-Exception: For **Spike** tickets, the Research Report is the final deliverable.
-There is no Plan step — the report hands off directly to the user for a decision.
+Exception: For **Spike** tickets, see Spike handling rules in
+`references/exploration-scope.md` under "Spike" section.
 
 ## Depth Levels
 
@@ -46,9 +46,9 @@ check, propose one of these depths and let the user override:
 
 | Depth | When | What happens |
 |-------|------|--------------|
-| **Light** | Bug with clear repro, small config change, typo fix | Quick codebase scan, minimal clarification, short report |
-| **Standard** | Most features, refactors, improvements | Full codebase + optional web research, thorough clarification, complete report |
-| **Deep** | Greenfield features, architectural changes, security work | Multiple explorer agents, web research, extensive clarification, comprehensive report |
+| **Light** | Bug with clear repro, small config change, typo fix | Quick codebase scan, minimal clarification, short ticket |
+| **Standard** | Most features, refactors, improvements | Full codebase + optional web research, thorough clarification, complete ticket |
+| **Deep** | Greenfield features, architectural changes, security work | Multiple explorer agents, web research, extensive clarification, comprehensive ticket |
 
 **Complexity signals** for auto-classification:
 - Light: user provides specific file/line, single-file scope, known cause
@@ -73,13 +73,17 @@ Focus on:
 - **Type**: Classify into one of the 11 ticket types:
   Bug, Feature, Change, Improvement, Refactoring, Security, Task, Doc, Test,
   Design-UI, Spike
+- **Method** (Spike only): If Spike, also classify the method:
+  Technical-PoC, Functional-PoC, Experiment, Literature-Review, Data-Analysis,
+  Methodology
 
 After the user responds:
 1. Classify the work type — present your inference with rationale and let the
-   user confirm or override.
+   user confirm or override. For Spike, also propose the method.
 2. Load the type-specific exploration scope from `references/exploration-scope.md`.
+   For Spike, load both the common Spike fields and the method-specific fields.
 3. Propose a research depth.
-4. Confirm type and depth with the user before proceeding.
+4. Confirm type (and method, if Spike) and depth with the user before proceeding.
 
 **Exit → Phase 2**: User has confirmed work type and depth.
 
@@ -200,9 +204,14 @@ Now that you understand the codebase context, ask deeper questions — the kind
 you couldn't have asked before exploring. One question per turn, preferring
 multiple choice.
 
-Even if all exploration scope fields appear `clear` after Phase 2, present your
-assessment to the user and get explicit confirmation before proceeding to
-Phase 4.
+**Depth modulation:**
+- **Light**: If all Required fields are already `clear` from Phase 1+2, skip
+  to Phase 4 with a brief summary: "All required fields are clear — moving to
+  approach selection." No field-by-field confirmation needed.
+- **Standard**: Present field status summary. Only ask about `unclear`/`missing`
+  fields. If all fields are `clear`, confirm briefly and move on.
+- **Deep**: Present full field status. Confirm each `clear` field's evidence
+  is sufficient. Ask about all `unclear`/`missing` fields in priority order.
 
 **What to clarify:**
 
@@ -247,6 +256,12 @@ Present 2-3 approaches with trade-offs, informed by codebase findings and
 external research. This is the strategic "what and why" decision — the Plan
 step will handle the tactical "how."
 
+**Depth modulation:**
+- **Light**: If the fix/change is obvious and there's only one reasonable
+  approach, state it directly and ask for confirmation. No need to fabricate
+  alternatives.
+- **Standard/Deep**: Always present 2-3 approaches with trade-offs.
+
 ```
 Based on [research findings], here are the approaches:
 
@@ -281,56 +296,84 @@ For rejected approaches, document:
 - Why it was rejected (specific evidence)
 - Conditions under which to revisit it
 
-**Exit → Phase 5**: User has selected an approach; rejected approaches are
-documented with reasoning.
+**DoD generation:** After the user selects an approach, generate the Definition
+of Done for this ticket:
 
-### Phase 5: Research Report
+1. Start with the **type template** DoD from `references/exploration-scope.md`
+   (or the method-specific template for Spike tickets).
+2. Add **ticket-specific criteria** based on the chosen approach and
+   requirements discovered during Phases 1-3. These should be concrete and
+   verifiable — tied to the specific user stories, acceptance criteria,
+   constraints, or success metrics identified during research.
+3. Present the combined DoD to the user for approval. The user may add, remove,
+   or modify criteria.
+
+**Exit → Phase 5**: User has selected an approach, rejected approaches are
+documented, and DoD is approved by the user.
+
+### Phase 5: Research Ticket
 
 Output the final handoff document using the template at
-`references/research-report-template.md`. The report must start with
-`# Research Report`.
+`references/research-ticket-template.md`. The ticket must start with
+`# Research Ticket`.
 
-**Before writing the report**, confirm the following with the user:
-- Requirements are accurate and complete (or gaps are explicitly approved)
-- Chosen approach is confirmed
-- Scope boundaries are agreed
+**Template usage:**
+- The DoR Field Status table replaces type-specific detail sections — populate
+  each field's Evidence column with findings (including file:line refs). Do NOT
+  create a separate type-details section.
+- For Spike tickets, include both common Spike fields and method-specific fields
+  in the DoR table.
+- Omit "Handoff Notes for Plan" for Spike tickets (except Technical-PoC /
+  Functional-PoC that proceed to Plan).
 
-**Report quality gate** — the report is ready when:
-- All type-specific exploration scope fields are `clear` or have documented gaps
-  with user-approved risk decisions
+**Pre-write gate — verify before writing:**
+
+The ticket CANNOT be written unless ALL of the following are true:
+
+1. **DoR passes**: All Required (R) fields are `clear`. All Optional (O) fields
+   are `clear` or have user-approved gaps.
+2. **DoD is populated**: Type template + ticket-specific criteria, approved by user.
+3. **Approach is confirmed**: User selected an approach in Phase 4.
+4. **Scope boundaries are explicit**: In/out/deferred are agreed.
+
+If any gate item fails, STOP. Present the blocker to the user and return to
+the appropriate phase to resolve it. Do not write an incomplete ticket.
+
+**Ticket quality checklist** (verify silently — do not re-confirm with user):
 - Problem statement with context is present
 - Requirements are specific and testable
 - Codebase findings include file:line evidence
 - Chosen approach has rationale
 - Rejected approaches have reasoning
 - Anti-patterns include reasoning (what NOT to do)
-- Scope boundaries are explicit (in/out/deferred)
 - Open questions for Plan are documented
 - **Feature-specific**: User Stories and Gherkin AC are present
-- **Spike-specific**: "Handoff Notes for Plan" section is omitted
+- **Spike-specific**: follows Spike handling rules in exploration-scope.md
 
-Save the report to: `docs/research/YYYY-MM-DD-<topic>.md`
+Save the ticket to: `docs/research/YYYY-MM-DD-<topic>.md`
 Create the `docs/research/` directory if it doesn't exist.
 
-End the skill after writing the report. Do not proceed to planning.
+End the skill after writing the ticket. Do not proceed to planning.
 
 ## Anti-Patterns to Avoid
 
 | Wrong | Right |
 |-------|-------|
 | Exploring code before understanding intent | Ask 1 orienting question first |
-| Asking 10 questions before exploring | Interleave: quick intent, explore, informed questions |
+| Asking 10 questions before exploring | Orient first, explore, then ask informed questions |
 | Multiple questions per message | One question at a time |
 | Inventing file paths or line numbers | Only cite paths you actually found and read |
 | "Consider refactoring X" (vague) | "X at file.ts:42 uses pattern Y, which conflicts with Z" (specific) |
-| Proposing one approach | Always present 2-3 with trade-offs |
-| Jumping to implementation | Stop at the Research Report |
+| Proposing one approach (Standard/Deep) | Present 2-3 with trade-offs unless Light depth with obvious fix |
+| Jumping to implementation | Stop at the Research Ticket |
+| Writing ticket with unresolved Required fields | DoR gate must pass — all R fields clear |
+| Generic DoD criteria | DoD must include ticket-specific criteria, not just type template |
 | Same depth for every task | Match depth to complexity, let user override |
-| Exhaustive research on simple bugs | Light depth: quick scan, short report, move on |
+| Exhaustive research on simple bugs | Light depth: quick scan, short ticket, move on |
 
 ## Key Principles
 
-- **Interleave questions and exploration** — don't fully separate them
+- **Explore then clarify** — orient, explore code, ask informed questions
 - **One question at a time** — don't dump a list
 - **Multiple choice preferred** — easier to answer, faster to converge
 - **Evidence-based claims** — every file reference must be real (file:line)

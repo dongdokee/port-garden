@@ -2,18 +2,17 @@
 
 | Field | Req | Why it matters |
 |-------|-----|---------------|
-| Current state | R | What the situation is today — either measured baseline OR qualitative description of the problem |
-| Target state | R | What improvement looks like — either measurable goal OR quality attribute to enhance with rationale |
-| Evidence | R | What supports the improvement need — profiling data, logical analysis, threat model, code smell pattern, or architectural concern |
-| Non-goals | R | What behavior must NOT change — improvement shouldn't alter functionality |
-| Affected code paths | O | Where to focus exploration based on evidence |
-| Constraints | O | Budget, compatibility, or architectural limits on the approach |
-| Alternative approaches | O | Phase 4 requires 2-3 approaches — exploration must surface them |
+| Current state | R | What the situation is today — measured baseline, qualitative description, or structural pain points |
+| Target state | R | What improvement looks like — measurable goal, quality attribute, or target structure |
+| Evidence | R | What supports the need — profiling data, code smell pattern, architectural concern |
+| Behavior invariants | R* | What must NOT change — contracts the improvement preserves. *Required for structural changes, Optional otherwise. |
+| Affected code/files | O | Where to focus exploration |
+| Downstream dependents | O | What depends on the code being changed |
+| Constraints | O | Budget, compatibility, architectural limits |
 
 ## DoD Template
 
 - [ ] Target state achieved (measured or demonstrated)
-- [ ] Improvement verified against evidence baseline
-- [ ] Non-goals confirmed untouched — no functional behavior changes
+- [ ] Behavior invariants preserved — same tests pass (if applicable)
 - [ ] No regressions in existing functionality
-- [ ] Improvement is sustainable (not a temporary workaround)
+- [ ] Improvement verified against evidence baseline

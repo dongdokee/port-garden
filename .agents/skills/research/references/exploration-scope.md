@@ -28,6 +28,17 @@ classify each into a status above. In the final ticket, report as
 `Field | Req | Status | Evidence` per the template. The type file is the source
 of truth for which fields exist and their requirement level.
 
+## Common Fields (all types)
+
+These fields apply to every ticket type. Do not duplicate in type-specific files.
+
+| Field | Req | Why it matters |
+|-------|-----|---------------|
+| Non-goals | O | Explicit scope boundaries prevent over-exploration and scope creep |
+
+Note: Alternative approaches are a Phase 4 process concern, not a field.
+The agent surfaces approaches during exploration; they are not tracked as a DoR field.
+
 ## Gap Handling
 
 For each unresolved field, record: `why_needed`, `risk_if_missing`, `user_approved_risk`.
@@ -38,31 +49,23 @@ Required fields the user skips are **risk overrides**.
 | Type | Purpose |
 |------|---------|
 | Bug | Identify and resolve root cause of broken behavior |
-| Feature | Architect and integrate new functionality |
-| Change | Modify existing functional requirements |
-| Improvement | Enhance non-functional quality attributes |
-| Refactoring | Structural change, no behavior change |
+| Feature | Architect and integrate new or modified functionality |
+| Improvement | Enhance non-functional quality attributes or structural refactoring |
 | Security | Mitigate vulnerabilities and harden the system |
-| Task | Execute specific, bounded operations |
-| Doc | Create or update documentation |
-| Test | Add or improve test coverage |
+| Task | Execute specific, bounded operations (including documentation and testing) |
 | Design-UI | Implement or update visual design and UX flow |
-| Spike | Time-boxed uncertainty reduction |
 
-**Ambiguous types:** If uncertain between two types, prefer the one with fewer
-Required fields. Change vs Improvement: if behavior changes, it's a Change; if
-only quality attributes change, it's an Improvement.
+### Disambiguation Rules
 
-## Spike Methods
+| If... | Then type is... |
+|-------|----------------|
+| Broken behavior deviating from expected | Bug |
+| New capability OR modifying existing behavior | Feature |
+| Non-functional quality enhancement OR structural refactoring | Improvement |
+| Vulnerability, hardening, or compliance | Security |
+| Bounded operation (migration, documentation, testing, setup) | Task |
+| Visual design, UX flow, or UI component work | Design-UI |
 
-| Method | When | Output |
-|--------|------|--------|
-| Technical-PoC | Evaluate feasibility of technology/approach | Prototype + findings |
-| Functional-PoC | Evaluate user interaction/requirements | Mockup + feedback |
-| Experiment | Test a measurable hypothesis | Protocol, data, analysis |
-| Literature-Review | Survey existing knowledge | Bibliography + synthesis |
-| Data-Analysis | Analyze data for insights | Analysis + conclusions |
-| Methodology | Design/evaluate a method | Protocol + validation |
+Tie-breaker: prefer the type with fewer Required fields.
 
 Type-specific scope and DoD: `types/{type}.md`
-Spike-specific: `types/spike/common.md` + `types/spike/{method}.md`

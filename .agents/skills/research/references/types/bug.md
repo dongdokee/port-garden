@@ -4,7 +4,7 @@
 |-------|-----|---------------|
 | Repro scenario | R | Can't explore the right code without knowing how to trigger the bug |
 | Expected vs Actual behavior | R | Defines what "fixed" means |
-| Affected code paths | R | Where to point the code-explorer agent |
+| Affected code paths | R | Where to focus exploration |
 | Root cause hypothesis | R | Research should attempt to identify the cause, not just document symptoms |
 | Severity/impact | O | Determines research depth (light vs standard) |
 | Related tests | O | Existing test coverage tells you what's already validated |

@@ -11,7 +11,15 @@ If no topic was provided, ask the user what to research.
 
 ## Hard Gate
 
-No implementation code or production changes. The research ticket is the only deliverable. If the user wants to skip steps, ask which to abbreviate and record skipped areas as gaps.
+No implementation code or production changes. The research ticket is the only deliverable.
+
+This gate is non-overridable, including time pressure, authority pressure, or incident urgency.
+
+Do not choose implementation-first options ("patch now", "deploy first", "retroactive ticket later"), even if presented in the prompt.
+
+Prototype-first shortcut is not allowed: existing prototype/implementation knowledge does not replace this run's research process.
+
+If the user wants to skip steps, ask which to abbreviate and record skipped areas as gaps.
 
 **Convention:** At each step, present findings and proceed. If the user objects, correct and continue.
 
@@ -130,11 +138,19 @@ A Required field is `clear` only when evidence includes all 3:
 
 If any element is missing, keep the field `unclear` or `missing`.
 
+Each Required field marked `clear` must include at least one run-local anchor gathered in this run (codebase anchor or prompt quote captured during this run), not only prior tickets/prototype memory.
+
 **Feature Entry point rule:** "create a new file/module" is not `clear` by itself. Map to an existing integration anchor (route, job runner, handler, or orchestrator) or leave `missing` with documented risk.
 
 ### Resolve Required Blockers
 
 Try codebase exploration first, then ask the user. Batch related questions. After 2 attempts on the same blocker, offer risk override. Record unresolved fields: why needed, risk if missing, user-approved risk.
+
+Log blockers explicitly using this shape before continuing:
+- `Blocker: <required field>`
+- `Attempt 1: <action + result>`
+- `Attempt 2: <action + result>`
+- `Risk override: <approved/not approved + rationale>`
 
 ### Resolve Optional Gaps
 
@@ -169,4 +185,13 @@ Fails → return to Classify Fields (Standard/Deep) or Explore Codebase (Light).
 
 Output using `references/research-ticket-template.md`. Must start with `# Research Ticket`. Light: omit N/A sections.
 
-Save to: `docs/research/YYYY-MM-DD-<topic>.md`. End skill after writing.
+Save to: `docs/research/YYYY-MM-DD-<topic>.md`.
+
+Before ending, print a completion summary containing ALL items:
+1. `Type: <...>`
+2. `Depth: <...>`
+3. `Required fields: <table or explicit statuses>`
+4. `Selected approach: <...>`
+5. `Ticket path: docs/research/YYYY-MM-DD-<topic>.md`
+
+Do not end after classification-only output.

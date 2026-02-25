@@ -9,6 +9,7 @@
 | Affected code/files | O | Where to focus exploration |
 | Downstream dependents | O | What depends on the code being changed |
 | Constraints | O | Budget, compatibility, architectural limits |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ## DoD Template
 

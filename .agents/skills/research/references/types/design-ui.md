@@ -7,6 +7,7 @@
 | Responsive requirements | O | Breakpoints, device targets |
 | Existing UI patterns | O | Component library, design tokens, styling conventions |
 | Accessibility specs | O | WCAG level, aria requirements, keyboard navigation |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ## DoD Template
 

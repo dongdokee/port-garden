@@ -6,6 +6,7 @@
 | Completion criteria | R | How to verify task completion — prevents ambiguous endpoints |
 | Dependencies | O | What must exist before this task can start |
 | Idempotency | O | Can this be safely re-run? — matters for migrations, scripts, ops tasks |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ### Guidance for Common Task Types
 

@@ -7,6 +7,7 @@
 | Threat model | R | Who could exploit this, how, and what's the impact |
 | Remediation options | R | Known fixes, patches, or mitigation strategies |
 | Verification method | R | How to confirm the vulnerability is resolved |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ## DoD Template
 

@@ -11,6 +11,7 @@
 | Existing patterns | O | Similar features in the codebase that inform approach |
 | External dependencies | O | Libraries, APIs, services needed |
 | Constraints | O | Performance, security, compatibility requirements |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ## DoD Template
 

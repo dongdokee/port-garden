@@ -8,6 +8,7 @@
 | Root cause hypothesis | R | Research should attempt to identify the cause, not just document symptoms |
 | Severity/impact | O | Determines research depth (light vs standard) |
 | Related tests | O | Existing test coverage tells you what's already validated |
+| Non-goals | O | Scope boundaries — what is explicitly excluded to prevent over-exploration |
 
 ## DoD Template
 

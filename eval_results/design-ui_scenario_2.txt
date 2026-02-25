@@ -1,0 +1,18 @@
+STDOUT:
+I will activate the `research` skill to understand the project's specific criteria for task classification.
+
+I will read the classification definitions for "Feature" and "Design-UI" to ensure my choice aligns with the project's standards.
+
+I will classify this task as **Design-UI** (Option A). While the request introduces new team permissions logic, the primary focus is a layout redesign involving navigation, section restructuring, and role-based visibility rules—all of which are explicitly covered under the `Design-UI` classification's conditionally required fields. I will document this decision to address the ambiguity between it and the `Feature` type, as required by the `research` skill.
+
+1. **Candidate types considered:** `Design-UI` and `Feature`.
+2. **Why chosen type wins:** The PM's request is explicitly framed as a "Redesign" of an existing page (`src/pages/Settings.tsx`). The core deliverables—new navigation, section restructuring, and visibility logic—align with the `Design-UI` scope's "Interaction flow" and "Behavior/visibility rules." The PM's emphasis on "making the settings page work for teams" reinforces that this is a UI-driven structural change.
+3. **Why the other type is not primary:** While "team permissions" is a new capability, it is being implemented here as a UI surface and visibility layer rather than a greenfield backend subsystem. The `Feature` type would be more appropriate if the task focused on the underlying authorization service or data model rather than the Settings page redesign.
+
+**Action:** Proceeding with the research phase using the **Design-UI** classification and documenting the rationale.
+
+
+STDERR:
+YOLO mode is enabled. All tool calls will be automatically approved.
+Loaded cached credentials.
+YOLO mode is enabled. All tool calls will be automatically approved.

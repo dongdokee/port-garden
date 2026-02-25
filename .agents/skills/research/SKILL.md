@@ -65,6 +65,11 @@ Infer **What**, **Why**, and **Type**:
 
 Ambiguous? Ask one question. Tie-breaker: prefer the type closest to the user's stated intent.
 
+If two types are both defensible, record a short **Type Decision** note before proceeding:
+1. Candidate types considered
+2. Why chosen type wins (tie-breaker + evidence)
+3. Why the other type is not primary
+
 **Exit:** Type established.
 
 ## Explore Codebase
@@ -81,9 +86,18 @@ Thin results (< 2 relevant files or central question unanswered): retry once bro
 |-------|------|-----------|
 | **Light** | Fix obvious, 1-2 files, no ambiguity | Pre-write Gate |
 | **Standard** | Multiple files, some unknowns, bounded scope | Classify Fields |
-| **Deep** | Architectural, greenfield, cross-cutting, or security | Expand Exploration |
+| **Deep** | Architectural, greenfield, cross-cutting, or security. Default for Feature when entry point and subsystem are both missing. | Expand Exploration |
 
 Present chosen depth with reasoning. User may override.
+
+### Deep Triggers (Feature guardrail)
+
+Choose **Deep** by default when any 2 are true:
+- Required **Entry point** remains unresolved after Explore Codebase
+- Requested capability has no existing subsystem/pattern (greenfield)
+- Behavior spans 3+ layers (for example: jobs + services + data model)
+
+If user requests lower depth anyway, record explicit risk approval before continuing.
 
 **Exit:** Depth confirmed.
 
@@ -106,6 +120,17 @@ Read `references/types/{type}.md`. Classify each field — start every field at 
 All types share one common Optional field: **Non-goals** (scope boundaries).
 
 **Deep only:** verify `clear` evidence is specific enough for the chosen depth.
+
+### Evidence Bar for `clear` (Standard/Deep)
+
+A Required field is `clear` only when evidence includes all 3:
+1. Concrete claim (what is true)
+2. Source anchor (file:line, artifact id, or prompt quote)
+3. Impact note (why it matters for scope, approach, or risk)
+
+If any element is missing, keep the field `unclear` or `missing`.
+
+**Feature Entry point rule:** "create a new file/module" is not `clear` by itself. Map to an existing integration anchor (route, job runner, handler, or orchestrator) or leave `missing` with documented risk.
 
 ### Resolve Required Blockers
 
@@ -136,6 +161,7 @@ After selection, build DoD from type template + ticket-specific criteria; presen
 2. DoD approved
 3. Approach confirmed
 4. Scope boundaries explicit
+5. Type Decision recorded when classification was ambiguous
 
 Fails → return to Classify Fields (Standard/Deep) or Explore Codebase (Light).
 

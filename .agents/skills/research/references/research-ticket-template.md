@@ -4,6 +4,7 @@
 ## Context
 - **Type**: <!-- Bug | Feature | Improvement | Security | Task | Design-UI -->
 - **Depth**: <!-- Light | Standard | Deep -->
+- **Type Decision**: <!-- required when classification is ambiguous: candidates considered, why chosen, why not the alternative -->
 - **Objective**: <!-- what the user wants to accomplish -->
 
 ## Problem Statement

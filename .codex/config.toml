@@ -1,7 +1,0 @@
-[agents.code-explorer]
-description = "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, understanding patterns and abstractions, and documenting dependencies to inform new development"
-config_file = "agents/code-explorer.toml"
-
-[agents.web-researcher]
-description = "Conducts internet research on specific topics, gathers information from multiple sources, synthesizes findings, and explores research questions. Use for fact-finding, technology comparisons, API documentation, library evaluation, or investigating questions that require web-based research."
-config_file = "agents/web-researcher.toml"
